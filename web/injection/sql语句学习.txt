@@ -1,0 +1,79 @@
+union
+=========================================================
+将不同表以字段位置顺序联合来 如 
+mysql> select * from book;
++----+------------+-------+
+| id | name       | price |
++----+------------+-------+
+|  1 | HerryPoter |    32 |
+|  2 | Jenny      |    21 |
+|  3 | Kali linux |    21 |
+|  4 | okfoll     |    54 |
++----+------------+-------+
+
+mysql> select * from orders;
++----+---------+------------+
+| id | buyer   | name       |
++----+---------+------------+
+|  1 | lizxian | kali linux |
+|  2 | denny   | HerryPoter |
+|  3 | demon   | sa fa      |
+|  4 | Tim     | Cool       |
+|  5 | Marry   | Sunshy     |
++----+---------+------------+
+
+mysql> select id,name,price from book
+    -> union
+    -> select id,buyer,name from orders
+    -> order by id;
++----+------------+------------+
+| id | name       | price      |
++----+------------+------------+
+|  1 | lizxian    | kali linux |
+|  1 | HerryPoter | 32         |
+|  2 | denny      | HerryPoter |
+|  2 | Jenny      | 21         |
+|  3 | demon      | sa fa      |
+|  3 | Kali linux | 21         |
+|  4 | Tim        | Cool       |
+|  4 | okfoll     | 54         |
+|  5 | Marry      | Sunshy     |
++----+------------+------------+
+
+对于内容相同的不同表联合查询会合并，不会叠加
+
+
+
+对于字段长度不同的表使用联合查询会报错
+如果book表字段长度为4，orders表字段长度为3
+利用这点可以破解出表的字段长度
+
+select * from book union select * from orders
+ERROR 1222 (21000): The used SELECT statements have a different number of columns
+
+
+关于order by
+=========================================================
+order by 后面添加数字表示对某个字段进行排列，如
+
+mysql> select * from book order by 1;			--对第一个字段id进行排列
++----+------------+-------+
+| id | name       | price |
++----+------------+-------+
+|  1 | HerryPoter |    32 |
+|  2 | Jenny      |    21 |
+|  3 | Kali linux |    21 |
+|  4 | okfoll     |    54 |
+|  5 | Avsd       |    11 |
++----+------------+-------+
+
+mysql> select * from book order by 3;			--对第三个字段price进行排列
++----+------------+-------+
+| id | name       | price |
++----+------------+-------+
+|  5 | Avsd       |    11 |
+|  2 | Jenny      |    21 |
+|  3 | Kali linux |    21 |
+|  1 | HerryPoter |    32 |
+|  4 | okfoll     |    54 |
++----+------------+-------+

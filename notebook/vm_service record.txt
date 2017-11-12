@@ -1,0 +1,34 @@
+1 name : ufad-ws60
+  display :VMware Agent Service
+  description : Vmware Agent Service
+  execfile:vmware-ufad.exe
+  说明:vmware代理（过滤）服务 可以在没有网络情况下组建虚拟局网络
+  默认为手动,精简版vmware没有此服务
+
+2 name ： VMAuthdService
+  display : VMware Authorization Service
+  description : Authorization and authentication service for starting 
+  and accessing	virtual machines.
+  execfile : vmware-authd.exe
+  说明vmware授权服务。如果你需要使用vmware的无缝模式（unity）或后台运行的话，需要启动此服务。
+  如果你使用的精简版vmware的话，一般此服务可选择安装与否。
+
+3 name : VMnetDHCP
+  display : VMware DHCP service
+  description : DHCP sevice for virtual networks
+  execfile : vmnetdhcp.exe
+  说明：vmware的dhcp服务器服务。为与vmnet1（默认host-only）和vmnet8（默认nat）虚拟网卡连接的虚拟机提供ip分配任务。
+  如果使用桥接模式，不启动此服务虚拟机也可以上网。在精简版中，一般此服务可选择安装与否。
+
+4 name : VMwareNAT Service 
+  display : VMware NAT Service
+  description : Network address translation for virtual networks.
+  execfile : vmnat.exe
+  说明：vmware网络地址转换服务。NAT网络模式需要此服务，如果是桥接模式，可以不启动此服务。
+  在精简版中，一般此服务可选择安装与否。
+
+5 name : VMUSBArbService
+　display :  VMware USB Arbitration Service
+  execfile:vmware-usbarbitrator.exe
+　说明：顾名思义，这是管理虚拟机中USB接口的服务，如果你需要在虚拟机中使用USB设备的话，那么需要启动此服务。
+  在精简版中，一般此服务可选择安装与否。

