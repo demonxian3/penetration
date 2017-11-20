@@ -54,6 +54,7 @@ MSSQL,MYSQL:
 
 
 
+
 写文件
 
   通过--current-user取得当前用户权限
@@ -69,4 +70,10 @@ MSSQL,MYSQL:
   /var/www
   D:\www\inetpub
 
-  
+
+其他参数
+
+  --current-db  获取当前数据库
+  --current-user 获取当前登录的用户
+  --users --password 爆破数据库用户密码
+

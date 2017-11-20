@@ -1,0 +1,5 @@
+Tamper data
+HackBar
+Live HTTP Headers
+FoxyProxy
+TamperMonkey

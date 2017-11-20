@@ -1,0 +1,58 @@
+实验请在本地local上做，用tty，如果用pty可能会卡在那个随机熵数那
+
+http://www.ruanyifeng.com/blog/2013/07/gpg.html
+http://www.cnblogs.com/demonxian3/p/7860318.html
+
+使用gpg --gen-key 生成密钥对时在随机熵数那卡半天，换成vmware的本地tty图像界面终端操作解决
+
+加快速度可以使用 find / 
+
+问题二，导出的公钥传到其他服务器上无法导入
+
+[root@demon-pc ~]# gpg --import public-key 
+gpg: key 9D740AFC was created 18743 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC was created 18743 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC was created 18743 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC was created 18743 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC: no valid user IDs
+gpg: this may be caused by a missing self-signature
+gpg: Total number processed: 1
+gpg:           w/o user IDs: 1
+
+
+第五行出现 no valid user IDs 无效的用户ID，通过谷歌无意间发现一个参数 --allow-non-selfsigned-uid 就解决了
+[root@demon ~]# gpg --import --allow-non-selfsigned-uid public-key 
+gpg: key 9D740AFC was created 18951 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC was created 18951 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC was created 18951 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC was created 18951 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC: accepted non self-signed user ID "Demon (hello) <123@qq.com>"
+gpg: key 9D740AFC was created 18951 seconds in the future (time warp or clock problem)
+gpg: key 9D740AFC: public key "Demon (hello) <123@qq.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+
+产生这个问题是因为本地没有生成密钥对，也就不存在uid，因此gpg程序无法辨别谁是接受者
+
+
+注意下面的实验有失败的地方可以加参数： --allow-non-selfsigned-uid
+
+生成密钥对：	gpg --gen-key
+生成撤销证书：	gpg --gen-revoke
+查看公钥：	gpg --list-keys
+查看私钥：	gpg -K
+删除公钥：	gpg --delete-key  [UID]
+删除私钥：	gpg --delete-secret-keys [UID]
+导出公钥：	gpg --armor --output public-key --export [UID]
+导出私钥：	gpg --armor --output private-key --export-secret-keys [UID]
+打印指纹：	gpg --fingerprint
+导入密钥：	gpg --import [公钥文件/私钥文件]
+公钥加密：	gpg --recipient [UID] --output demon-en.txt --encrypt demon.txt 
+私钥解密：	gpg --output "demon-de.txt" --decrypt "demon-en.txt"
+私钥签名：	gpg --sign demon.txt		#生成.gpg文件
+ASCII签名：	gpg --clearsign demon.txt	#生成.asc文件
+分离签名：	gpg --detach-sign demon.txt	#生成.sig文件 独的签名文件，与文件内容分开存放 默认二进制存储，加-a转ASCII
+签名+加密：	gpg --local-user [发信者ID] --recipient [接受者ID] --armor --sign --encrypt demon.txt
+验证签名：	gpg --verify dmeon.txt.asc demon.txt
+
+

