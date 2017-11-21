@@ -1,0 +1,50 @@
+配置fckeditor 2.6.6的过程中的一些总结。
+1.http://ckeditor.com/download下载"FCKeditor 2.6.6, released on 15 February 2010"版本
+2.保留目录"/fckeditor/"
+ fckconfig.js
+ fckeditor.js
+ fckeditor.php
+ fckeditor_php4.php
+ fckeditor_php5.php
+ fckstyles.xml
+ fcktemplates.xml
+ editor文件夹
+ 其余均可删掉
+3.删除目录"/fckeditor/editor/"下的”_source"目录
+4.保留目录"/fckeditor/editor/filemanager/connectors/"
+ php文件夹
+ 其余均可删掉
+5.保留目录"/fckeditor/editor/lang/"
+ en.js
+ zh.js
+ zh-cn.js
+ 其余均可删掉
+6.做一些基本配置
+ 打开"/fckeditor/fckconfig.js"
+ FCKConfig.AutoDetectLanguage =false;//关闭语言自动检测
+ var FCKConfig.DefaultLanguage = 'zh-cn';//设置默认语言格式
+ var _FileBrowserLanguage = 'php';
+ var _QuickUploadLanguage = 'php';
+7.文件上传设置
+ 打开"editor\filemanager\connectors\php\config.php"
+ $Config['Enabled'] = true;//默认为false，关闭状态
+ $Config['UserFilesPath'] = '/userfiles/';//更改上传文件路径 根目录为：http://localhost
+8.调用方式实例
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+ </head>
+ <body>
+  <p>这是一个测试！</p>
+  <form action="#" method="POST">
+  <?php
+  include("../fckeditor/fckeditor.php");
+  $oFCKeditor = new FCKeditor('FCKeditor1');
+  $oFCKeditor -> BasePath = "/fckeditor/";
+  $oFCKeditor -> Value = ' ';
+  $oFCKeditor -> Create();
+  ?>
+  <input type="submit" value="提交">
+ </form>
+ </body>
+ </html>

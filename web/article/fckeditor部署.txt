@@ -1,0 +1,517 @@
+£¨1£©¾«¼ò£¬"ÑÔ¶à±ØÊ§"£¬ÎÄ¼ş¶àÁËÒ²ÊÇÒ»ÖÖÒş»¼¡£FCKEditorÖ§³Ö¶àÖÖ·şÎñÆ÷½Å±¾ÓïÑÔ£¬Êµ¼ÊÊ¹ÓÃµÄÊ±ºòÎÒÃÇ¸ù±¾ÓÃ²»ÁËÄÇÃ´¶àÎÄ¼ş£¬ÎÒÃÇÒª¸ù¾İ×Ô¼ºµÄĞèÒª¶ÔÆä½øĞĞ¾«¼ò¡£
+¶ÔÓÚASPÏµÍ³À´Ëµ£º
+
+FCKEditor¸ùÄ¿Â¼£¬½ö±£Áô"fckeditor.asp£¬fckconfig.js£¬fckeditor.js£¬fckpackager.xml£¬fckstyles.xml£¬
+fcktemplates.xml"ÕâĞ©ÎÄ¼şÒÔ¼°editorÄ¿Â¼¡£É¾³ıÊ¾ÀıÄ¿Â¼"_samples"¡£
+"fckeditor\editor\filemanager\connectors"Ä¿Â¼ÏÂÃæ½ö±£Áô"asp"Ä¿Â¼£¬É¾³ıÆäËüÄ¿Â¼ºÍÎÄ¼ş¡£
+
+£¨2£©ĞŞ¸ÄÎÄ¼şÉÏ´«²ÉÓÃµÄ½Å±¾³ÌĞò£¨ÓïÑÔ£©¡£
+
+Ä¬ÈÏµÄFCKEditorÎÄ¼şÉÏ´«³ÌĞòÎªasp£¬Èç¹ûÊÇÓÃÔÚaspÏµÍ³ÖĞ£¬ÄÇ¾Í²»ÓÃÔÙĞŞ¸ÄÁË¡£
+
+Èç¹ûÊÇÓÃÔÚPHPÏµÍ³ÖĞµÄ»°£¬ĞèÒª×öÈçÏÂĞŞ¸Ä£¬´ò¿ªfckconfig.js
+ÕÒµ½:
+var _FileBrowserLang ge = asp
+var _QuickUploadLang ge = asp
+¸Ä³É:
+var _FileBrowserLang ge = php
+var _QuickUploadLang ge = php
+
+£¨3£©¿ªÆôÎÄ¼şÉÏ´«£¬ĞŞ¸ÄÎÄ¼şÉÏ´«Ä¿Â¼¡£
+
+¶ÔÓÚASPÏµÍ³À´Ëµ£º
+´ò¿ªfckeditor\editor\filemanager\connectors\asp\config.asp
+ÆôÓÃÎÄ¼şÉÏ´«:
+
+ÕÒµ½:
+ConfigIsEnabled = false
+
+¸Ä³É:
+ConfigIsEnabled = tr
+
+ÉèÖÃÉÏ´«´æ·ÅÄ¿Â¼:
+
+ÕÒµ½:
+ConfigUserFilesPath = "/admin/uppic/"
+¸Ä³É:
+ConfigUserFilesPath = "×Ô¶¨ÒåµÄÂ·¾¶"
+
+¶ÔÓÚPHPÏµÍ³À´Ëµ£º
+´ò¿ªfckeditor/editor/filemanager/browser/default/connectors/php/config.php
+ÆôÓÃÎÄ¼şÉÏ´«:
+
+ÕÒµ½:
+$Config[Enabled] = false
+
+¸Ä³É:
+$Config[Enabled] = tr
+
+ÉèÖÃÉÏ´«´æ·ÅÄ¿Â¼:
+
+ÕÒµ½:
+$Config[UserFilesPath] = /userfiles/
+¸Ä³É:
+$Config[UserFilesPath] = ×Ô¶¨ÒåµÄÂ·¾¶
+
+£¨4£©ĞŞ¸ÄÉÏ´«ÎÄ¼şÃüÃû·½Ê½¡£
+
+FCKEditorÉÏ´«ÎÄ¼ş£¬ÎÄ¼şÃû²ÉÓÃÔ­ÎÄ¼şÃû£¬Èç¹ûÏë²ÉÓÃ×Ô¶¨ÒåµÄÎÄ¼şÃüÃû·½Ê½£¨±ÈÈç£¬Ëæ¼´Ãû³Æ£©£¬¿ÉÒÔĞŞ¸ÄÈçÏÂµØ
+·½£º
+
+¶ÔÓÚASPÏµÍ³À´Ëµ£º
+´ò¿ªfckeditor\sample\edit\editor\filemanager\connectors\asp\commands.asp
+
+ÕÒµ½£º
+sFileName = SanitizeFileName( sFileName )
+
+½«¸Ã¾ä¸ÄÎª×Ô¶¨ÒåµÄÎÄ¼şÃüÃû¸ñÊ½£¬ÀıÈç£º
+
+dim RndStr
+Randomize
+RndStr = Cstr(Fix(9000*rnd()+1000)) ²úÉúÒ»¸öËæ»úÊı
+sFileName =year(date)&month(Date)&day(Date)&hour(time)&minute(time)&second(time)&RndStr &"." &
+**tension
+
+¶ÔÓÚPHPÏµÍ³À´Ëµ£º
+´ò¿ªfckeditor\editor\editor\filemanager\connectors\php\commands.php
+
+ÕÒµ½£º
+$sOriginalFileName = $sFileName ;
+
+ÔÚ¸Ã¾äÇ°Ãæ¼ÓÈë£º
+
+// ³õÊ¼»¯ÖÖ×Ó
+$sstr =split(" ",microtime(),5);
+$seed =$sstr[0]*10000;
+// Ê¹ÓÃÖÖ×Ó³õÊ¼»¯Ëæ»úÊı·¢ÉúÆ÷
+srand($seed);
+// Éú³ÉÖ¸¶¨·¶Î§ÄÚµÄËæ»úÊı
+$random =rand(1000,10000);
+// ºÏ³ÉËæ¼´µÄÎÄ¼şÃû
+$sFileName = date("YmdHis", time()).$random.".".$**tension;
+
+
+£¨5£©FCKEditorÔÚ³ÌĞòÖĞÒıÓÃ·½Ê½¡£
+
+¶ÔÓÚASPÏµÍ³À´Ëµ£º
+ĞèÒª°üº¬ÏÂÃæµÄÍ·ÎÄ¼ş
+<!--#incl? file="fckeditor/fckeditor.asp"-->
+ÔÚ±à¼­Æ÷ËùÔÚµÄÎ»ÖÃÌí¼ÓÈçÏÂ´úÂë£º
+<%
+Dim oFCKeditor
+Set oFCKeditor = New FCKeditor
+oFCKeditor.BasePath = "/fckeditor/" Õâ¸öÂ·¾¶±ØĞëÊÇÏà¶ÔÓÚÕ¾µã¸ùÄ¿Â¼µÄÂ·¾¶£¬ÉèÖÃ´íÎó±à¼­Æ÷
+½«ÎŞ·¨ÏÔÊ¾
+
+oFCKeditor.ToolbarSet="Default"
+oFCKeditor.Width = "98%"
+oFCKeditor.Height= "500px"
+
+oFCKeditor.Val = "" ÉèÖÃÄ¬ÈÏÖµ
+oFCKeditor.Create "shangpin_description" ±à¼­Æ÷µÄid£¬Ïàµ±ÓÚinput±êÇ©µÄnameÊôĞÔÖµ£¬ÕâÀïÊÇ
+shangpin_description
+%>
+
+¶ÔÓÚPHPÀ´Ëµ£º
+ÔÚ±à¼­Æ÷ËùÔÚµÄÎ»ÖÃÌí¼ÓÈçÏÂ´úÂë£º
+<?php
+incl?("fckeditor/fckeditor.php"); // Í·ÎÄ¼ş
+$oFCKeditor = new FCKeditor("shangpin_description") ; // ±à¼­Æ÷µÄid£¬Ïàµ±ÓÚinput±êÇ©µÄ
+nameÊôĞÔÖµ£¬ÕâÀïÊÇshangpin_description
+$oFCKeditor->BasePath="/fckeditor/ " ; //ÉèÖÃFCKeditorÂ·¾¶
+
+$oFCKeditor->ToolbarSet ="Default";
+$oFCKeditor->Width="98%";
+$oFCKeditor->Height="500px";
+
+$oFCKeditor->Val=""; // ÉèÖÃÄ¬ÈÏÖµ
+$oFCKeditor->Create();
+?>
+
+£¨6£©»ñÈ¡FCKEditorÖĞµÄÊı¾İ¡£
+
+¶ÔÓÚ·şÎñÆ÷¶Ë½Å±¾³ÌĞòÀ´Ëµ£¬½«"±à¼­Æ÷µÄid"µ±×öinput±êÇ©µÄnameÊôĞÔÖµÀ´»ñÈ¡¼´¿É£¬ÀıÈç£º
+
+ÔÚASPÖĞreqst("shangpin_description")£¬ÔÚPHPÖĞ$_REQST["shangpin_description"]
+
+JSÖĞÓÃFCKeditorAPI.GetInstance(shangpin_description).GetXHTML(tr)µÃµ½shangpin_description¶ÔÓ¦µÄÖµ
+
+
+
+
+
+ckEditorµÄASPÅäÖÃ
+
+ÔÚÍøÉÏÕÒÁËºÃ¾ÃÖÕÓÚÕÒµ½ÁË£¡O(¡É_¡É)O¹ş¹ş~
+Ò»¡¢Ê¹ÓÃ·½·¨£º
+
+1¡¢ÔÚÒ³Ãæ<head>ÖĞÒıÈëckeditorºËĞÄÎÄ¼şckeditor.js
+
+<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+
+2¡¢ÔÚÊ¹ÓÃ±à¼­Æ÷µÄµØ·½²åÈëHTML¿Ø¼ş<textarea>
+
+<textarea id="TextArea1" cols="20" rows="2" class="ckeditor"></textarea>
+
+Èç¹ûÊÇASP.NET»·¾³£¬Ò²¿ÉÓÃ·şÎñÆ÷¶Ë¿Ø¼ş<TextBox>
+
+<asp:TextBox ID="tbContent" runat="server" TextMode="MultiLine" class="ckeditor"></asp:TextBox>
+
+×¢ÒâÔÚ¿Ø¼şÖĞ¼ÓÉÏ class="ckeditor" ¡£
+
+3¡¢½«ÏàÓ¦µÄ¿Ø¼şÌæ»»³É±à¼­Æ÷´úÂë
+
+<script type="text/javascript">
+CKEDITOR.replace('TextArea1');
+//Èç¹ûÊÇÔÚASP.NET»·¾³ÏÂÓÃµÄ·şÎñÆ÷¶Ë¿Ø¼ş<TextBox>
+CKEDITOR.replace('tbContent');
+//Èç¹û<TextBox>¿Ø¼şÔÚÄ¸°æÒ³ÖĞ£¬ÒªÕâÑùĞ´
+CKEDITOR.replace('<%=tbContent.ClientID.Replace("_","$") %>');
+</script>
+
+4¡¢ÅäÖÃ±à¼­Æ÷
+
+ckeditorµÄÅäÖÃ¶¼¼¯ÖĞÔÚ ckeditor/config.js ÎÄ¼şÖĞ£¬ÏÂÃæÊÇÒ»Ğ©³£ÓÃµÄÅäÖÃ²ÎÊı£º
+
+// ½çÃæÓïÑÔ£¬Ä¬ÈÏÎª 'en'
+
+config.language = 'zh-cn';
+
+// ÉèÖÃ¿í¸ß
+
+config.width = 400;
+
+config.height = 400;
+
+// ±à¼­Æ÷ÑùÊ½£¬ÓĞÈıÖÖ£º'kama'£¨Ä¬ÈÏ£©¡¢'office2003'¡¢'v2'
+
+config.skin = 'v2';
+
+// ±³¾°ÑÕÉ«
+
+config.uiColor = '#FFF';
+
+// ¹¤¾ßÀ¸£¨»ù´¡'Basic'¡¢È«ÄÜ'Full'¡¢×Ô¶¨Òå£©plugins/toolbar/plugin.js
+
+config.toolbar = 'Basic';
+
+config.toolbar = 'Full';
+
+Õâ½«ÅäºÏ£º
+config.toolbar_Full = [
+['Source','-','Save','NewPage','Preview','-','Templates'],
+['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+'/',
+['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+['Link','Unlink','Anchor'],
+['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+'/',
+['Styles','Format','Font','FontSize'],
+['TextColor','BGColor']
+];
+
+//¹¤¾ßÀ¸ÊÇ·ñ¿ÉÒÔ±»ÊÕËõ
+config.toolbarCanCollapse = true;
+
+//¹¤¾ßÀ¸µÄÎ»ÖÃ
+config.toolbarLocation = 'top';//¿ÉÑ¡£ºbottom
+
+//¹¤¾ßÀ¸Ä¬ÈÏÊÇ·ñÕ¹¿ª
+config.toolbarStartupExpanded = true;
+
+// È¡Ïû ¡°ÍÏ×§ÒÔ¸Ä±ä³ß´ç¡±¹¦ÄÜ plugins/resize/plugin.js
+config.resize_enabled = false;
+
+//¸Ä±ä´óĞ¡µÄ×î´ó¸ß¶È
+
+config.resize_maxHeight = 3000;
+
+//¸Ä±ä´óĞ¡µÄ×î´ó¿í¶È
+config.resize_maxWidth = 3000;
+
+//¸Ä±ä´óĞ¡µÄ×îĞ¡¸ß¶È
+config.resize_minHeight = 250;
+
+//¸Ä±ä´óĞ¡µÄ×îĞ¡¿í¶È
+config.resize_minWidth = 750;
+// µ±Ìá½»°üº¬ÓĞ´Ë±à¼­Æ÷µÄ±íµ¥Ê±£¬ÊÇ·ñ×Ô¶¯¸üĞÂÔªËØÄÚµÄÊı¾İ
+config.autoUpdateElement = true;
+
+// ÉèÖÃÊÇÊ¹ÓÃ¾ø¶ÔÄ¿Â¼»¹ÊÇÏà¶ÔÄ¿Â¼£¬Îª¿ÕÎªÏà¶ÔÄ¿Â¼
+config.baseHref = ''
+
+// ±à¼­Æ÷µÄz-indexÖµ
+config.baseFloatZIndex = 10000;
+
+//ÉèÖÃ¿ì½İ¼ü
+config.keystrokes = [
+[ CKEDITOR.ALT + 121 /*F10*/, 'toolbarFocus' ], //»ñÈ¡½¹µã
+[ CKEDITOR.ALT + 122 /*F11*/, 'elementsPathFocus' ], //ÔªËØ½¹µã
+
+[ CKEDITOR.SHIFT + 121 /*F10*/, 'contextMenu' ], //ÎÄ±¾²Ëµ¥
+
+[ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ], //³·Ïú
+[ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ], //ÖØ×ö
+[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 /*Z*/, 'redo' ], //
+
+[ CKEDITOR.CTRL + 76 /*L*/, 'link' ], //Á´½Ó
+
+[ CKEDITOR.CTRL + 66 /*B*/, 'bold' ], //´ÖÌå
+[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ], //Ğ±Ìå
+[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ], //ÏÂ»®Ïß
+
+[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ]
+]
+
+//ÉèÖÃ¿ì½İ¼ü ¿ÉÄÜÓëä¯ÀÀÆ÷¿ì½İ¼ü³åÍ» plugins/keystrokes/plugin.js.
+config.blockedKeystrokes = [
+CKEDITOR.CTRL + 66 /*B*/,
+CKEDITOR.CTRL + 73 /*I*/,
+CKEDITOR.CTRL + 85 /*U*/
+]
+
+//ÉèÖÃ±à¼­ÄÚÔªËØµÄ±³¾°É«µÄÈ¡Öµ plugins/colorbutton/plugin.js.
+config.colorButton_backStyle = {
+element : 'span',
+styles : { 'background-color' : '#(color)' }
+}
+
+//ÉèÖÃÇ°¾°É«µÄÈ¡Öµ plugins/colorbutton/plugin.js
+config.colorButton_colors = '000,800000,8B4513,2F4F4F,008080,000080,4B0082,696969,B22222,A52A2A,DAA520,
+
+006400,40E0D0,0000CD,800080,808080,F00,FF8C00,FFD700,008000,0FF,00F,EE82EE,
+
+A9A9A9,FFA07A,FFA500,FFFF00,00FF00,AFEEEE,ADD8E6,DDA0DD,D3D3D3,FFF0F5,
+
+FAEBD7,FFFFE0,F0FFF0,F0FFFF,F0F8FF,E6E6FA,FFF'
+
+//ÊÇ·ñÔÚÑ¡ÔñÑÕÉ«Ê±ÏÔÊ¾¡°ÆäËüÑÕÉ«¡±Ñ¡Ïî plugins/colorbutton/plugin.js
+config.colorButton_enableMore = false
+
+//Çø¿éµÄÇ°¾°É«Ä¬ÈÏÖµÉèÖÃ plugins/colorbutton/plugin.js
+config.colorButton_foreStyle = {
+element : 'span',
+styles : { 'color' : '#(color)' }
+};
+
+//ËùĞèÒªÌí¼ÓµÄCSSÎÄ¼ş ÔÚ´ËÌí¼Ó ¿ÉÊ¹ÓÃÏà¶ÔÂ·¾¶ºÍÍøÕ¾µÄ¾ø¶ÔÂ·¾¶
+config.contentsCss = './contents.css';
+
+//ÎÄ×Ö·½Ïò
+config.contentsLangDirection = 'rtl'; //´Ó×óµ½ÓÒ
+
+//CKeditorµÄÅäÖÃÎÄ¼ş Èô²»ÏëÅäÖÃ Áô¿Õ¼´¿É
+CKEDITOR.replace( 'myfiled', { customConfig : './config.js' } );
+
+//½çÃæ±à¼­¿òµÄ±³¾°É« plugins/dialog/plugin.js
+config.dialog_backgroundCoverColor = 'rgb(255, 254, 253)'; //¿ÉÉèÖÃ²Î¿¼
+config.dialog_backgroundCoverColor = 'white' //Ä¬ÈÏ
+
+//±³¾°µÄ²»Í¸Ã÷¶È ÊıÖµÓ¦¸ÃÔÚ£º0.0¡«1.0 Ö®¼ä plugins/dialog/plugin.js
+config.dialog_backgroundCoverOpacity = 0.5
+
+//ÒÆ¶¯»òÕß¸Ä±äÔªËØÊ± ±ß¿òµÄÎü¸½¾àÀë µ¥Î»£ºÏñËØ plugins/dialog/plugin.js
+config.dialog_magnetDistance = 20;
+
+//ÊÇ·ñ¾Ü¾ø±¾µØÆ´Ğ´¼ì²éºÍÌáÊ¾ Ä¬ÈÏÎª¾Ü¾ø Ä¿Ç°½öfirefoxºÍsafariÖ§³Ö plugins/wysiwygarea/plugin.js.
+config.disableNativeSpellChecker = true
+
+//½øĞĞ±í¸ñ±à¼­¹¦ÄÜ Èç£ºÌí¼ÓĞĞ»òÁĞ Ä¿Ç°½öfirefoxÖ§³Ö plugins/wysiwygarea/plugin.js
+config.disableNativeTableHandles = true; //Ä¬ÈÏÎª²»¿ªÆô
+
+//ÊÇ·ñ¿ªÆô Í¼Æ¬ºÍ±í¸ñ µÄ¸Ä±ä´óĞ¡µÄ¹¦ÄÜ config.disableObjectResizing = true;
+config.disableObjectResizing = false //Ä¬ÈÏÎª¿ªÆô
+
+//ÉèÖÃHTMLÎÄµµÀàĞÍ
+config.docType = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ";
+
+//ÊÇ·ñ¶Ô±à¼­ÇøÓò½øĞĞäÖÈ¾ plugins/editingblock/plugin.js
+config.editingBlock = true;
+
+//±à¼­Æ÷ÖĞ»Ø³µ²úÉúµÄ±êÇ©
+config.enterMode = CKEDITOR.ENTER_P; //¿ÉÑ¡£ºCKEDITOR.ENTER_BR»òCKEDITOR.ENTER_DIV
+
+//ÊÇ·ñÊ¹ÓÃHTMLÊµÌå½øĞĞÊä³ö plugins/entities/plugin.js
+config.entities = true;
+
+//¶¨Òå¸ü¶àµÄÊµÌå plugins/entities/plugin.js
+config.entities_additional = '#39'; //ÆäÖĞ#´úÌæÁË&
+
+//ÊÇ·ñ×ª»»Ò»Ğ©ÄÑÒÔÏÔÊ¾µÄ×Ö·ûÎªÏàÓ¦µÄHTML×Ö·û plugins/entities/plugin.js
+config.entities_greek = true;
+
+//ÊÇ·ñ×ª»»Ò»Ğ©À­¶¡×Ö·ûÎªHTML plugins/entities/plugin.js
+config.entities_latin = true;
+
+//ÊÇ·ñ×ª»»Ò»Ğ©ÌØÊâ×Ö·ûÎªASCII×Ö·û Èç"This is Chinese: ººÓï."×ª»»Îª"This is Chinese: ººÓï." plugins/entities/plugin.js
+config.entities_processNumerical = false;
+
+//Ìí¼ÓĞÂ×é¼ş
+config.extraPlugins = 'myplugin'; //·ÇÄ¬ÈÏ ½öÊ¾Àı
+
+//Ê¹ÓÃËÑË÷Ê±µÄ¸ßÁÁÉ« plugins/find/plugin.js
+config.find_highlight = {
+element : 'span',
+styles : { 'background-color' : '#ff0', 'color' : '#00f' }
+};
+
+//Ä¬ÈÏµÄ×ÖÌåÃû plugins/font/plugin.js
+config.font_defaultLabel = 'Arial';
+
+//×ÖÌå±à¼­Ê±µÄ×Ö·û¼¯ ¿ÉÒÔÌí¼Ó³£ÓÃµÄÖĞÎÄ×Ö·û£ºËÎÌå¡¢¿¬Ìå¡¢ºÚÌåµÈ plugins/font/plugin.js
+config.font_names = 'Arial;Times New Roman;Verdana';
+
+//ÎÄ×ÖµÄÄ¬ÈÏÊ½Ñù plugins/font/plugin.js
+config.font_style = {
+element : 'span',
+styles : { 'font-family' : '#(family)' },
+overrides : [ { element : 'font', attributes : { 'face' : null } } ]
+};
+
+//×ÖÌåÄ¬ÈÏ´óĞ¡ plugins/font/plugin.js
+config.fontSize_defaultLabel = '12px';
+
+//×ÖÌå±à¼­Ê±¿ÉÑ¡µÄ×ÖÌå´óĞ¡ plugins/font/plugin.js
+config.fontSize_sizes ='8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px'
+
+//ÉèÖÃ×ÖÌå´óĞ¡Ê± Ê¹ÓÃµÄÊ½Ñù plugins/font/plugin.js
+config.fontSize_style = {
+element : 'span',
+styles : { 'font-size' : '#(size)' },
+overrides : [ { element : 'font', attributes : { 'size' : null } } ]
+};
+
+//ÊÇ·ñÇ¿ÖÆ¸´ÖÆÀ´µÄÄÚÈİÈ¥³ı¸ñÊ½ plugins/pastetext/plugin.js
+config.forcePasteAsPlainText =false //²»È¥³ı
+
+//ÊÇ·ñÇ¿ÖÆÓÃ¡°&¡±À´´úÌæ¡°&¡±plugins/htmldataprocessor/plugin.js
+config.forceSimpleAmpersand = false;
+
+//¶Ôaddress±êÇ©½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_address = { element : 'address', attributes : { class : 'styledAddress' } };
+
+//¶ÔDIV±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_div = { element : 'div', attributes : { class : 'normalDiv' } };
+
+//¶ÔH1±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_h1 = { element : 'h1', attributes : { class : 'contentTitle1' } };
+
+//¶ÔH2±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_h2 = { element : 'h2', attributes : { class : 'contentTitle2' } };
+
+//¶ÔH3±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_h1 = { element : 'h3', attributes : { class : 'contentTitle3' } };
+
+//¶ÔH4±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_h1 = { element : 'h4', attributes : { class : 'contentTitle4' } };
+
+//¶ÔH5±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_h1 = { element : 'h5', attributes : { class : 'contentTitle5' } };
+
+//¶ÔH6±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_h1 = { element : 'h6', attributes : { class : 'contentTitle6' } };
+
+//¶ÔP±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_p = { element : 'p', attributes : { class : 'normalPara' } };
+
+//¶ÔPRE±êÇ©×Ô¶¯½øĞĞ¸ñÊ½»¯ plugins/format/plugin.js
+config.format_pre = { element : 'pre', attributes : { class : 'code' } };
+
+//ÓÃ·ÖºÅ·Ö¸ôµÄ±êÇ©Ãû×Ö ÔÚ¹¤¾ßÀ¸ÉÏÏÔÊ¾ plugins/format/plugin.js
+config.format_tags = 'p;h1;h2;h3;h4;h5;h6;pre;address;div';
+
+//ÊÇ·ñÊ¹ÓÃÍêÕûµÄhtml±à¼­Ä£Ê½ ÈçÊ¹ÓÃ£¬ÆäÔ´Âë½«°üº¬£º<html><body></body></html>µÈ±êÇ©
+config.fullPage = false;
+
+//ÊÇ·ñºöÂÔ¶ÎÂäÖĞµÄ¿Õ×Ö·û Èô²»ºöÂÔ Ôò×Ö·û½«ÒÔ¡°¡±±íÊ¾ plugins/wysiwygarea/plugin.js
+config.ignoreEmptyParagraph = true;
+
+//ÔÚÇå³ıÍ¼Æ¬ÊôĞÔ¿òÖĞµÄÁ´½ÓÊôĞÔÊ± ÊÇ·ñÍ¬Ê±Çå³ıÁ½±ßµÄ<a>±êÇ© plugins/image/plugin.js
+config.image_removeLinkByEmptyURL = true;
+
+//Ò»×éÓÃ¶ººÅ·Ö¸ôµÄ±êÇ©Ãû³Æ£¬ÏÔÊ¾ÔÚ×óÏÂ½ÇµÄ²ã´ÎÇ¶Ì×ÖĞ plugins/menu/plugin.js.
+config.menu_groups ='clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea';
+
+//ÏÔÊ¾×Ó²Ëµ¥Ê±µÄÑÓ³Ù£¬µ¥Î»£ºms plugins/menu/plugin.js
+config.menu_subMenuDelay = 400;
+
+//µ±Ö´ĞĞ¡°ĞÂ½¨¡±ÃüÁîÊ±£¬±à¼­Æ÷ÖĞµÄÄÚÈİ plugins/newpage/plugin.js
+config.newpage_html = '';
+
+//µ±´ÓwordÀï¸´ÖÆÎÄ×Ö½øÀ´Ê±£¬ÊÇ·ñ½øĞĞÎÄ×ÖµÄ¸ñÊ½»¯È¥³ı plugins/pastefromword/plugin.js
+config.pasteFromWordIgnoreFontFace = true; //Ä¬ÈÏÎªºöÂÔ¸ñÊ½
+
+//ÊÇ·ñÊ¹ÓÃ<h1><h2>µÈ±êÇ©ĞŞÊÎ»òÕß´úÌæ´ÓwordÎÄµµÖĞÕ³Ìù¹ıÀ´µÄÄÚÈİ plugins/pastefromword/plugin.js
+config.pasteFromWordKeepsStructure = false;
+
+//´ÓwordÖĞÕ³ÌùÄÚÈİÊ±ÊÇ·ñÒÆ³ı¸ñÊ½ plugins/pastefromword/plugin.js
+config.pasteFromWordRemoveStyle = false;
+
+//¶ÔÓ¦ºóÌ¨ÓïÑÔµÄÀàĞÍÀ´¶ÔÊä³öµÄHTMLÄÚÈİ½øĞĞ¸ñÊ½»¯£¬Ä¬ÈÏÎª¿Õ
+config.protectedSource.push( /<\?[\s\S]*?\?>/g ); // PHP Code
+config.protectedSource.push( //g ); // ASP Code
+config.protectedSource.push( /(]+>[\s|\S]*?<\/asp:[^\>]+>)|(]+\/>)/gi ); // ASP.Net Code
+
+//µ±ÊäÈë£ºshift+EnterÊ±²åÈëµÄ±êÇ©
+config.shiftEnterMode = CKEDITOR.ENTER_P; //¿ÉÑ¡£ºCKEDITOR.ENTER_BR»òCKEDITOR.ENTER_DIV
+
+//¿ÉÑ¡µÄ±íÇéÌæ´ú×Ö·û plugins/smiley/plugin.js.
+config.smiley_descriptions = [
+':)', ':(', ';)', ':D', ':/', ':P',
+'', '', '', '', '', '',
+'', ';(', '', '', '', '',
+'', ':kiss', '' ];
+
+//¶ÔÓ¦µÄ±íÇéÍ¼Æ¬ plugins/smiley/plugin.js
+config.smiley_images = [
+'regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','confused_smile.gif','tounge_smile.gif',
+'embaressed_smile.gif','omg_smile.gif','whatchutalkingabout_smile.gif','angry_smile.gif','angel_smile.gif','shades_smile.gif',
+'devil_smile.gif','cry_smile.gif','lightbulb.gif','thumbs_down.gif','thumbs_up.gif','heart.gif',
+'broken_heart.gif','kiss.gif','envelope.gif'];
+
+//±íÇéµÄµØÖ· plugins/smiley/plugin.js
+config.smiley_path = 'plugins/smiley/images/';
+
+//Ò³ÃæÔØÈëÊ±£¬±à¼­¿òÊÇ·ñÁ¢¼´»ñµÃ½¹µã plugins/editingblock/plugin.js plugins/editingblock/plugin.js.
+config.startupFocus = false;
+
+//ÔØÈëÊ±£¬ÒÔºÎÖÖ·½Ê½±à¼­ Ô´ÂëºÍËù¼û¼´ËùµÃ "source"ºÍ"wysiwyg" plugins/editingblock/plugin.js.
+config.startupMode ='wysiwyg';
+
+//ÔØÈëÊ±£¬ÊÇ·ñÏÔÊ¾¿òÌåµÄ±ß¿ò plugins/showblocks/plugin.js
+config.startupOutlineBlocks = false;
+
+//ÊÇ·ñÔØÈëÑùÊ½ÎÄ¼ş plugins/stylescombo/plugin.js.
+config.stylesCombo_stylesSet = 'default';
+//ÒÔÏÂÎª¿ÉÑ¡
+config.stylesCombo_stylesSet = 'mystyles';
+config.stylesCombo_stylesSet = 'mystyles:/editorstyles/styles.js';
+config.stylesCombo_stylesSet = 'mystyles:http://www.example.com/editorstyles/styles.js';
+
+//ÆğÊ¼µÄË÷ÒıÖµ
+config.tabIndex = 0;
+
+//µ±ÓÃ»§¼üÈëTABÊ±£¬±à¼­Æ÷×ß¹ıµÄ¿Õ¸ñÊı£¬( ) µ±ÖµÎª0Ê±£¬½¹µã½«ÒÆ³ö±à¼­¿ò plugins/tab/plugin.js
+config.tabSpaces = 0;
+
+//Ä¬ÈÏÊ¹ÓÃµÄÄ£°å plugins/templates/plugin.js.
+config.templates = 'default';
+
+//ÓÃ¶ººÅ·Ö¸ôµÄÄ£°åÎÄ¼şplugins/templates/plugin.js.
+config.templates_files = [ 'plugins/templates/templates/default.js' ]
+
+//µ±Ê¹ÓÃÄ£°åÊ±£¬¡°±à¼­ÄÚÈİ½«±»Ìæ»»¡±¿òÊÇ·ñÑ¡ÖĞ plugins/templates/plugin.js
+config.templates_replaceContent = true;
+
+//Ö÷Ìâ
+config.theme = 'default';
+
+//³·ÏúµÄ¼ÇÂ¼²½Êı plugins/undo/plugin.js
+config.undoStackSize =20;
+
+// ÔÚ CKEditor ÖĞ¼¯³É CKFinder£¬×¢Òâ ckfinder µÄÂ·¾¶Ñ¡ÔñÒªÕıÈ·¡£
+//CKFinder.SetupCKEditor(null, '/ckfinder/'); 
