@@ -3,3 +3,7 @@ HackBar
 Live HTTP Headers
 FoxyProxy
 TamperMonkey
+FireBug
+Editor cookie
+View source chart
+
