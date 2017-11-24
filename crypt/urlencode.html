@@ -1,0 +1,48 @@
+<meta charset="utf-8">
+
+<h1 style="width:300px;text-align:center">URLencode/URLdecode</h1><hr style="width:400px;margin-left:0px"><br>
+<div style="width:300px;height:300px;float:left;border:1px solid #c3c3c3" contenteditable="true" id="inp"></div>
+<div style="width:300px;height:300px;float:left;border:1px solid #c3c3c3" contenteditable="true" id="oup"></div>
+<input type="button" value="Encode" style="height:150px;cursor:pointer" onclick="URLencode()"/><br>
+<input type="button" value="Decode" style="height:150px;cursor:pointer" onclick="URLdecode()"/>
+<script>
+
+  
+  //getElement from body
+  input = document.getElementById("inp");
+  output = document.getElementById("oup");
+
+
+
+  //URLencode method
+  URLencode = function(){
+
+     var encResult = "";
+     var inpValue = input.innerHTML;
+
+     for(var i=0;i<inpValue.length;i++)
+       encResult += ("%"+inpValue.charCodeAt(i).toString(16));
+
+     output.innerHTML = encResult;
+  }
+
+  //URLdecode method
+  URLdecode = function(){
+     var inpValue = output.innerHTML;
+
+     var decResult = "";
+
+     var inpArr = inpValue.split("%");
+
+     for(var i=1;i<inpArr.length;i++){
+       inpArr[i] = parseInt(inpArr[i],16)
+       decResult += String.fromCharCode(inpArr[i]);
+     }
+     
+     input.innerHTML = decResult;
+  }  
+
+  
+ 
+
+</script>
