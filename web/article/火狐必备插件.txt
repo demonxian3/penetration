@@ -5,5 +5,5 @@ FoxyProxy
 TamperMonkey
 FireBug
 Editor cookie
-View source chart
-
+X-Forwarded-For Header
+Modify Headers

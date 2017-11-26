@@ -1,0 +1,7 @@
+关于js中的hook
+http://www.xfocus.net/articles/200712/963.html
+
+XSS漏洞
+http://www.freebuf.com/articles/web/40520.html
+
+

