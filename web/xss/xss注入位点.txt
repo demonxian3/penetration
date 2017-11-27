@@ -166,6 +166,26 @@ user=<script>alert(1)</script>
 
 
 
+code-6:X-FORWARDED-FOR位点
+-----------------------------------------------------------------------------
+<?php
+  echo "This is the  x-forwarded-for.php test page <br>";
+  $cip = getenv ( 'HTTP_CLIENT_IP' );				//获取IP地址一种方式
+  $xip = getenv ( 'HTTP_X_FORWARDED_FOR' );			//获取IP地址二种方式
+  $rip = getenv ( 'REMOTE_ADDR' );				//获取IP地址三种方式
+  echo " HTTP_CLIENT_IP = $cip  <br>";
+  echo " HTTP_X_FORWARDED_FOR = $xip <br>";
+  echo " REMOTE_ADDR = $rip <br>";
+?>
+-----------------------------------------------------------------------------
+安装火狐插件Modify Headers可以伪造HTTP_CLIENT_IP客户端IP地址
+而X-Forwarded-For Header可以伪造X-Forwarded-For的IP地址
+还有一个REMOTE_ADDR获取IP函数，这个无法修改
+但是这种XSS貌似没什么利用价值，因为传给受害者时XFF没设
+
+ 
+
+
 
 
 

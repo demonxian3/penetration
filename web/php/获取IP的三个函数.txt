@@ -1,0 +1,14 @@
+
+$cip = getenv("HTTP_CLIENT_IP");
+$xip = getenv("HTTP_X_FORWARDED_FOR");
+$rip = getenv("REMOTE_ADDR");
+
+
+三者比较如下：
+
+$_SERVER["REMOTE_ADDR"]  		//获取访问服务器的IP
+$_SERVER["HTTP_X_FORWARDED_FOR"]  	//通过代理获取IP
+$_SERVER["HTTP_CLIENT_IP"]  		//获取客户端及浏览器所在IP
+
+
+ curl -d "qq=caonimabi&mm=laji&ip=123.123.123.123&dizhi=U_is_shabi"

