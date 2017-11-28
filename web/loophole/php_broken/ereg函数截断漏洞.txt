@@ -1,0 +1,42 @@
+提示是ereg()函数有漏洞哩；从小老师就说要用科学的方法来算数。
+
+code:
+===========================================================
+<?php
+$flag = "ereg and strpos";
+if (isset ($_GET['password'])) {
+    if (ereg ("^[a-zA-Z0-9]+$",$_GET['password']) === FALSE)    
+       {
+        echo '<p>You password must be alphanumeric</p>';
+    }
+    else if (strlen($_GET['password']) < 8 && $_GET['password'] > 9999999)
+    {
+        if (strpos ($_GET['password'], '*-*') !== FALSE)
+        {
+            die('Flag: ' . $flag);
+        }
+        else
+        {
+            echo('<p>*-* have not been found</p>');
+        }
+    }
+    else
+    {
+        echo '<p>Invalid password</p>';
+    }
+}
+?>
+===========================================================
+
+代码审计:
+GET方式提交password，然后用ereg()正则限制了password的形式，只能是一个或者多个数字、大小写字母，继续strlen()限制了长度小于8并且大小必须大于9999999，继续strpos()对password进行匹配，必须含有-，最终才输出flag
+
+因为ereg函数存在NULL截断漏洞，
+导致了正则过滤被绕过,
+所以可以使用%00截断正则匹配。
+对于另一个难题可以使用科学计数法表示，
+计算器或电脑表达10的的幂是一般是e，
+也就是1.99714e13=19971400000000，
+所以构造1e8即100000000 > 9999999，
+在加上-。于是乎构造password=1e8%00*-*,
+成功得到答案

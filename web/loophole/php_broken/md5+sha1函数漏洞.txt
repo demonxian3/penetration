@@ -1,0 +1,54 @@
+1.Prudential
+I don't think that sha1 is broken. Prove me wrong. 
+
+code
+===============================================================
+<html>  
+<head>  
+    <title>level1</title>  
+    <link rel='stylesheet' href='style.css' type='text/css'>  
+</head>  
+<body>  
+
+<?php  
+require 'flag.php';  
+
+if (isset($_GET['name']) and isset($_GET['password'])) {  
+    if ($_GET['name'] == $_GET['password'])  
+        print 'Your password can not be your name.';  
+    else if (sha1($_GET['name']) === sha1($_GET['password']))  
+      die('Flag: '.$flag);  
+    else  
+        print '<p class="alert">Invalid password.</p>';  
+}  
+?>  
+
+<section class="login">  
+    <div class="title">  
+        <a href="./index.txt">Level 1</a>  
+    </div>  
+
+    <form method="get">  
+        <input type="text" required name="name" placeholder="Name"/><br/>  
+        <input type="text" required name="password" placeholder="Password" /><br/>  
+        <input type="submit"/>  
+    </form>  
+</section>  
+</body>  
+</html>  
+===============================================================
+
+分析代码逻辑，
+发现GET了两个字段name和password，
+获得flag要求的条件是：
+name != password & sha1(name) == sha1(password)，
+乍看起来这是不可能的，
+其实可以利用sha1()函数的漏洞来绕过。
+如果把这两个字段构造为数组，
+如：?name[]=a&password[]=b，
+这样在第一处判断时两数组确实是不同的，
+但在第二处判断时由于sha1()函数无法处理数组类型，
+将报错并返回false，
+if 条件成立，
+获得flag。
+经验证md5()函数同样存在此漏洞。
