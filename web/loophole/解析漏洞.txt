@@ -27,11 +27,13 @@ IIS 7.0/7.5  Nginx<8.03 畸形解析漏洞
 
    比如访问 http://www.xxx.com/xxx.gif/*.php  触发漏洞，使得图片被服务器php解析
 
+
+
 Apache htaccess文件解析漏洞
  
    如果Apache中 .htaccess 可被执行 且可以被上传  那可以尝试在 .htaccess中写入：
  
-   <FilesMatch "shell.php">
+   <FilesMatch "shell.jpg">
       SetHandler application/x-httpd-php
    </FilesMatch>
 

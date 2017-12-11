@@ -1,0 +1,32 @@
+
+
+apache里面有一个很好用的服务，伪静态技术，也就是URL Rewrite(URL重写)，它配合利用正则表达式，可以将url进行修改，可以利用网站的seo，也可以使url变得更加整洁，很是方便。
+
+这里面牵扯到几个配置很有趣。有时候，我们需要修改apache默认配置，但是，我们却不想对apache的http.conf进行太多的修改，所以我们使用.htaccess(分布式配置文件)来达到我们的目的。.htaccess提供了针对每个目录改变配置的方法，即在一个特定的目录中放置一个包含指令的文件，其中的指令作用于此目录及其所有子目录。
+
+不过，我们需要让apache来读取它，这里就需要修改apache下的http.conf了。
+
+我们的apache都有自己项目的默认根目录，在DocumentRoot "D:/www"下面(这里以我的路径为例子) ,有一个叫<Directory>的东西，它里面有这样一段代码：AllowOverride None，如果我们把None改成All，那么我们的www目录下所有项目都能读取到.htaccess了。
+
+一个单词就解决了我们的问题，固然方便，但是它的弊端也很多。例如每次访问项目时，apache都会对每一个.htaccess文件进行读取，处理速度大幅度降低；每一个项目都能进行apache的配置修改，安全性大大降低等。
+
+AllowOverride 它只能在<Directory>中生效，一般从安全性考虑，根目录的AllowOverride属性一般都配置成不允许任何Override,AlloOverride指令按类别决定了.htaccess文件中那些指令才是有效的，当AlloOverride设置成None时，相应的配置目录下的.htaccess文件是不被读取的，即无法生效。当AlloOverride设置成All时所以具有.htaccess的作用于的指令都会生效，意味着原apache指令会被.htaccess文件中的指令重写
+
+
+因此有时候我们只需要添加一个<Directory>，路径指到个人项目就行了。例如:
+
+<Directory "D:/www/my_app">
+
+Options Indexes FollowSymLinks    #显示当前文件夹下的所有文件
+
+  AllowOverride All #允许重写apache默认配置
+
+</Directory>
+
+虽然如此，一般都尽可能避免使用.htaccess文件，任何希望放在.htaccess文件中的配置，都可放在主配置的<Directory>段中，而且高效
+
+避免使用的原因主要有：
+
+首先是性能。如果AllowOverride启用了.htaccess文件，则Apache需要在每个目录中查找.htaccess文件，因此，无论是否真正用到，启用.htaccess都会导致性能的下降。另外，对每一个请求，都需要读取一次.htaccess文件。还有，Apache必须在所有上级的目录中查找.htaccess文件，以使所有有效的指令都起作用(参见指令的生效)
+
+其次是安全。这样会允许用户自己修改apache的配置，这可能会导致某些意想不到的修改，所以请认真考虑是否应当给予用户这样的特权。但是，如果给予用户较少的特权而不能满足其需要，则会带来额外的技术支持请求，所以，必须明确地告诉用户已经给予他们的权限，说明AllowOverride设置的值，并引导他们参阅相应的说明，以免日后生出许多麻烦。

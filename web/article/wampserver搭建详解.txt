@@ -1,0 +1,32 @@
+http://www.360doc.com/content/13/1113/09/426480_328813961.shtml
+
+phpmyadmin  -> 权限 -> 操作 -> 密码 -> 执行 
+
+127.0.01 
+localhost 都要
+
+然后phpmyadmin的配置文件要更新
+
+C:\wamp\apps\phpmyadmin\config.inc.php
+
+$cfg["Servers"][$i]["password"]= "yourpasswd"
+
+
+apache: httpd.conf
+
+Deny from all ->  Allow from all
+
+.htaccess伪静态重写URL功能：
+
+  AllowOverride None -> AllowOverride All
+  #LoadModule rewrite_module modules/mod_rewrite.so   //clear #
+
+  修改根目录
+  DocumentRoot
+  <Directory "c:/wamp/www/">    一定不能是反斜杠\
+
+重启
+
+   php.ini:
+
+   short_open_tag = off 是否允许使用 PHP 代码开始标志的缩写形式

@@ -1,0 +1,93 @@
+
+
+禁止显示Apache目录列表-Indexes FollowSymLinks
+如何修改目录的配置以禁止显示 Apache 目录列表。
+缺省情况下如果你在浏览器输入地址：
+
+http://localhost:8080/
+如果你的文件根目录里有 index.html，浏览器就会显示 index.html的内容，如果没有 index.html，浏览器就会显示文件根目录的目录列表，目录列表包括文件根目录下的文件和子目录。
+
+同样你输入一个虚拟目录的地址：
+
+http://localhost:8080/b/
+如果该虚拟目录下没有 index.html，浏览器也会显示该虚拟目录的目录结构，列出该虚拟目录下的文件和子目录。
+
+如何禁止 Apache 显示目录列表呢？
+
+要禁止 Apache 显示目录结构列表，只需将 Option 中的 Indexes 去掉即可。
+
+比如我们看看一个目录的目录配置：
+
+<Directory "D:/Apa/blabla">
+ Options Indexes FollowSymLinks #---------->Options FollowSymLinks
+ AllowOverride None
+ Order allow,deny
+ Allow from all
+</Directory>
+你只需要将上面代码中的 Indexes 去掉，就可以禁止 Apache 显示该目录结构。用户就不会看到该目录下的文件和子目录列表了。
+
+Indexes 的作用就是当该目录下没有 index.html 文件时，就显示目录结构，去掉 Indexes，Apache 就不会显示该目录的列表了。
+
+第二种方法
+解决办法：
+        1、编辑httpd.conf文件
+            vi ./conf/httpd.conf
+
+   找到如下内容：
+          ?BR>          <Directory “C:/Program Files/Apache2.2/htdocs”>
+              #
+              # Possible values for the Options directive are “None”, “All”,
+              # or any combination of:
+                 Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+              #
+              # Note that “MultiViews” must be named *explicitly* — “Options All”
+              # doesn’t give it to you.
+              #
+              # The Options directive is both complicated and important. Please see
+              # http://httpd.apache.org/docs/2.2/mod/core.html#options
+              # for more information.
+              #
+              Options Indexes FollowSymLinks
+
+              #
+              # AllowOverride controls what directives may be placed in .htaccess files.
+              # It can be “All”, “None”, or any combination of the keywords:
+              #   Options FileInfo AuthConfig Limit
+              #
+              AllowOverride None
+
+              #
+              # Controls who can get stuff from this server.
+              #
+              Order allow,deny
+              Allow from all
+
+          </Directory>
+          ……
+
+   在Options Indexes FollowSymLinks在Indexes前面加上 – 符号。
+        即： Options -Indexes FollowSymLinks
+   【备注：在Indexes前，加 + 代表允许目录浏览；加 – 代表禁止目录浏览。】
+
+    这样的话就属于整个Apache禁止目录浏览了。
+
+    如果是在虚拟主机中，只要增加如下信息就行：
+           <Directory “D:test”>
+             Options -Indexes FollowSymLinks
+             AllowOverride None
+             Order deny,allow
+             Allow from all
+         </Directory>
+     这样的话就禁止在test工程下进行目录浏览。
+
+备注： 切记莫把“Allow from all”改成 “Deny from all”，否则，整个网站都不能被打开。
+   <Finished>
+
+ 还有一种方法：
+
+可以在根目录的 .htaccess 文件中输入
+
+<Files *>
+Options -Indexes
+</Files>
+就可以阻止Apache 将目录结构列表出来。
