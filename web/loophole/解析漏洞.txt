@@ -11,6 +11,7 @@ IIS 5.x/6.0 文件解析漏洞
 
   另外除了后缀以asp结尾的文件会被当做asp脚本来解析外，还有后缀以 asa cer cdx 三种也会被当做asp脚本解析
 
+
 Apache  多后缀解析漏洞
 
   如果文件是多后缀名比如 xxx.php.owf.jxl ".owf" 和 ".jxl" Apache 不能识别，因此会继续向左判断下一个后缀名 "php"
@@ -28,12 +29,11 @@ IIS 7.0/7.5  Nginx<8.03 畸形解析漏洞
    比如访问 http://www.xxx.com/xxx.gif/*.php  触发漏洞，使得图片被服务器php解析
 
 
-
 Apache htaccess文件解析漏洞
  
    如果Apache中 .htaccess 可被执行 且可以被上传  那可以尝试在 .htaccess中写入：
  
-   <FilesMatch "shell.jpg">
+   <FilesMatch "shell.php">
       SetHandler application/x-httpd-php
    </FilesMatch>
 

@@ -1,0 +1,175 @@
+如何写表达式？
+
+匹配内容
+
+
+  [...]		匹配方括号内任意一个字符，支持连接符-     
+ 
+       /[012]/  可以与 0A1B2C    中的1或2或0匹配
+       /[0-5]/  可以与 1A3C5E6F  中的1或3或5进行匹配
+
+
+  [^...]	匹配不包含方括号内的任意一个字符，支持连接符-
+	
+       /[^012]/  可以与 0A1B2C    中的A或B或C
+       /[^012]/  可以与 1A3C5E6F  除了1,3,5其他字符都匹配
+
+
+  .		匹配除了回车和换行之外的任意字符，等价于 [^\r\n]
+
+
+
+  \d		匹配任意一个数字 等价于[0-9]
+
+       /\d\d/	  可以匹配 wy3k 中的3
+
+
+  \D		匹配任意一个非数字 等价于[^0-9]
+
+      /\D/	  可以匹配 wy3k 中的w或y或k
+
+
+
+   \s		匹配任意一个空白字符：空格，制表，换行，回车 等价于 [\t\n\r\x0B]
+
+      /\d\s\d/	  可以匹配 hello3 3world中的： 3空格3
+
+
+   \S		匹配任意一个非空白字符 等价于[^\t\n\r\x0B]
+
+
+
+   \w		匹配任何英文，数字，下划线 等价于 [a-zA-Z0-9_]
+
+
+   \W 		匹配任何非（英文，数字，下划线） 等价于 [^a-zA-Z0-9_]
+
+
+匹配量词
+
+   ?		匹配前一项0次或1次    /js?/    可以匹配  java 和 js
+
+
+   +		匹配前一项1次或n次     /js+/   可以匹配  js 不能匹配 javascript 
+
+
+   *		匹配前一项0次或n次     /bo*/   可以匹配 b bo boo boooo
+
+
+  {n}		匹配前一项恰好为n次	/o{2}/  可以匹配 book 和 booooook  虽然这里多个o但只有前两个o可以匹配
+
+
+  {n,}		匹配至少n次		/o{2,}/  可以匹配 book 和 booooook   注意后一个单词的o是全部命中
+
+
+  {n,m}		匹配至少n次，至多m次	/o{2,3}/  可以匹配 book 和 boook 不可以匹配 boooooook
+
+  
+
+
+匹配位置
+
+
+  ^		匹配字符串行开头	/^g/	  可以匹配 good 不可以匹配 bag 
+
+
+  $		匹配字符串行结尾	/g$/	  可以匹配 bag  不可以匹配 good
+
+
+  \b		匹配单词边界		/e\b/	  可以匹配 i love seek 中love的e   不匹配seek中的e
+
+
+  \B		匹配单词非边界		/e\B/	  可以匹配 i love seek 中seek的e   不匹配love中的e
+
+  
+
+
+正则连词
+
+  |		“或”，匹配满足其中一组表达式
+
+  ()		 分组 如： /J(ava)?Script/   可以匹配 JavaScript  JScript
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+ 创建正则表达式： new RegExp(pattern[,flags])
+ 
+    pattern:正则表达式
+    flags:标志  g 全局标志，  i 忽略大小写，  m 多行标志
+
+
+    m 多行标志：
+        若不设置该标志，^仅匹配所有字符串开头，$仅匹配所有字符串结尾
+        若设置了该标志，^匹配每一行字符串开头，$匹配每一行字符串结尾
+
+
+
+  //两种创建方式
+  var objExp = new RegExp("\\d",g);    //匹配全局数字
+  var objExp = /\d/g;		       //匹配全局数字
+
+    
+  正则对象有两个函数如下:
+
+  //test函数
+  var objExp = /\d/g
+  objExp.test("acd123%^&");       //true
+  objExp.test("ABCdef678");       //false
+
+
+  小测试: 能匹配下面的格式，N为数字
+  NNN-NNNNNNNN
+  NNNN-NNNNNNN
+  NNNN-NNNNNNNN
+
+
+  //exec函数
+  测试字符串是否匹配，如果不匹配返回null
+  否则返回第一个数组，第一个元素包含正则表达式相匹配的字符串
+  其他元素包含其他匹配的各个分组
+
+  function testPhoneNumber(){
+    //两种写法
+    var objExp1 = /^(\d{3,4}-)?\d{7,8}$/
+    var objExp2 = /(^(\d{3}-)?\d{7,8}$)|(^((\d{4}-)?\d{7,8})$)/
+    var inpVal = document.getElementById("input").value;
+    alert(objExp2.test(inpVal));
+  }
+
+ 
+  小测试: 输入身份证号码，从中提取出出身日期
+  441523 19961211 5716
+  
+  function getDateFromID(){
+    var objExp = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})(\w{1})$/
+    var inpVal = document.getElementById("input").value;
+    var arr = objExp.exec(inpVal);
+    alert("你输入的内容是" +arr[0] +"\n你的出身日期：" + arr[2] +"-"+ arr[3] +"-"+ arr[4]); 
+  }
+</script>

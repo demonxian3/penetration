@@ -1,0 +1,121 @@
+基本操作：
+
+  声明对象 
+
+     $pdo = new PDO("mysql:host=localhost;dbname=test","root","123456");
+
+
+  设置字符集
+
+     $pdo->exec('set names utf8');
+
+ 
+  修改数据（返回影响行数）
+
+     $sql = "insert into user values(NULL,'user7','777')";
+     $sql = "delete from user where password = '777'";
+     $sql = "update user set username = 'user6' where id = 6";
+     $num = $pdo->exec($sql);
+
+  
+  查询数据（返回二维数组）
+ 
+     $sql = "select * from user";
+     $smt = $pdo->query($sql);
+     $rows = $smt->fetchAll(PDO::FETCH_ASSOC);  //FETCH_NUM  FETCH_BOTH
+     var_dump($row);
+
+
+  
+
+
+预处理类：
+
+  提前将sql语句缓存的数据库服务器，下次php接到sql语句时会先检查数据库服务器有没有缓存sql语句
+  
+  如果缓存了就不发送sql语句给服务器，直接从数据库服务器拿到结果，这样做并不会提高数据库执行效率
+
+  而是减少了sql语句的传输量，虽然网速快效果并不明显，但减少sql语句的发送量一定程度上防止了sql注入语句
+
+
+
+  预处理修改操作
+
+  $add = "insert into user values(NULL,'user7','777')";
+
+  $smt = $pdo->prepare($sel);    //准备sql语句
+
+  $res = $smt->execute(); 	 //执行sql语句，结果集在$smt里存着  返回true or false
+
+  $tot = $smt->rowCount();	 //获取影响行数
+
+  if($res)echo "执行成功，影响了 $tot 行 <br/>";
+  echo "执行失败";
+
+
+
+
+  预处理查询操作
+
+  $sel = "select * from user";
+  
+  $smt = $pdo->prepare($smt);     //注意没有预处理前是 query函数
+
+  $res = $smt->execute();
+
+  $rows = $smt->fetch(PDO::FETCH_ASSOC);   //获取结果集
+  var_dump($rows);
+
+  $tot = $smt->rowCount();        //获取查询行数
+
+  
+
+
+  预处理查询行数的优化
+  如果只是仅仅想知道查询了多少行，而不需要知道结果可以这样写：
+
+  $sql = "select count(*) from user";
+  
+  $smt = $pdo->prepare($sql);
+ 
+  $smt->execute();
+  
+  $rows = $smt->fetchAll(PDO::FETCH_NUM);
+
+  $tot = $rows[0][0];
+
+  **************
+  * 更快的优化 *
+  **************
+
+  $smt = $pdo->prepare($sql);
+  
+  $smt->execute();
+
+  $tot = $smt->fetchColumn();  //参数表示第几行默认为0，每次执行返回一列
+
+  
+
+  预处理终极优势：
+
+  //体现预处理优势，减少查询
+  $sql = "select * from user where id>? and id<? and username=?";  //?是占位符，可以用于绑定
+  $smt = $pdo->prepare($sql);
+  $smt->bindValue(1,2);
+  $smt->bindValue(2,5);
+  $smt->bindValue(3,"user3");
+  $smt->execute();
+  $rows = $smt->fetchAll(PDO::FETCH_ASSOC);
+  echo "<pre>";
+  print_r($rows);
+  echo "</pre>";
+
+
+  //也可以这样绑定，当这种只能绑定数字不推荐
+  $sql = "select * from user where id=?";
+  $smt = $pdo->prepare($sql);
+  $smt->execute(array(3));
+  $res = $smt->fetchAll(PDO::FETCH_ASSOC);
+  echo "<pre>";
+  print_r($res);
+  echo "</pre>";
