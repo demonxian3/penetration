@@ -1,0 +1,15 @@
+最后处加上以下配置
+
+<Directory "/var/www/html">
+AuthUserFile /etc/httpd/httppasswd
+AuthName "this is private directory"
+AuthType Basic 
+require valid-user
+</Directory>
+
+[root@localhost ~]# htpasswd -c /etc/httpd/httppasswd webuser
+
+
+
+
+

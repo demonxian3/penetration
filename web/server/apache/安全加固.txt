@@ -1,0 +1,94 @@
+======================================================
+关闭404页面系统信息暴露
+
+Not Found
+-------------------------------------------------------
+The requested URL /a.html was not found on this server.
+Apache/2.2.15 (CentOS) Server at 118.89.51.198 Port 80    ---> danger
+
+
+解决方法：
+httpd.conf：
+ServerSignature On 改成 Off
+
+
+
+
+======================================================
+关闭目录遍历
+
+将
+<Directory "/var/www/html">
+	Options Indexes FollowSymLinks
+	AllowOverride All
+	Order deny,allow
+	Allow from all
+</Directory>
+
+中 Indexs 去掉
+
+
+
+
+======================================================
+单独创建一个运行账号和组并在httpd.conf上配置
+
+useradd -M -s /sbin/nologin guest
+
+httpd.conf:
+User  apache    -->  改成 guest
+Group apache    -->  改成 guest
+
+
+
+
+
+========================================================
+对上传目录下 取消匹配到格式的可执行文件
+
+<Directory "/var/www/html/upload">
+   <FilesMatch ".(php|php5)$">
+      Deny from all
+   </FilesMatch>
+</Directory>
+
+但是apache有个漏洞如 a.php.jpg格式的文件会当做php解析，所以也可以如下匹配
+
+<Directory "/var/www/html/upload">
+   <FilesMatch ".(php|php5)">    -->  去掉 $ 
+      Deny from all
+   </FilesMatch>
+</Directory>
+
+
+
+
+
+========================================================
+禁止某个目录被访问
+<Directory "/var/www/html/data">
+  Deny from all
+</Directory>
+
+
+
+
+
+========================================================
+仅允许某个IP地址访问
+<Directory "/var/www/html/data">
+  Deny from all
+  allow from 192.168.10.12
+</Directory>
+
+
+
+
+========================================================
+限制某个格式类型文件被访问
+
+<Files ~ ".txt$">
+  Order allow,deny
+  deny from all
+</Files>
+

