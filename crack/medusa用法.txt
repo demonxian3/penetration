@@ -1,0 +1,14 @@
+#显示所有模块
+medusa -d  
+
+#显示指定模块用法
+medusa -M ftp -q
+
+#指定用户名和主机爆破
+medusa -h 10.10.10.10  -u root -P wordlist
+
+#批量爆破
+medusa -H hostlist -U userlist -P wordlist
+
+#
+john -show shadow

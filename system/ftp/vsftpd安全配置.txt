@@ -1,0 +1,24 @@
+/etc/vsftpd/vsftpd.conf 
+
+禁止匿名登录,默认账号密码 anonymous 123456
+anonymous_enable = NO
+
+
+限制随意目录访问
+
+chroot_list_enable = YES    			去掉此行注释
+chroot_list_file=/etc/vsftpd/chroot_list  	去掉此行注释
+
+
+空闲时间自动断开
+
+idle_session_timeout = 60
+
+
+ls -R”命令常被用于DoS攻击，非常浪费系统资源，但“mirror”镜像工具会用到它
+
+ls_recurse_enable = YES
+
+
+
+
