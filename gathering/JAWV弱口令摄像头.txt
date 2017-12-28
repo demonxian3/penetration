@@ -1,0 +1,5 @@
+﻿http://114.32.188.225/view2.html		台湾
+http://41.39.14.229/view2.html			埃及
+http://67.60.237.140/view2.html?type=main	美国
+http://37.85.54.32/view2.html?type=main		德国
+http://79.248.121.75/view2.html			德国
